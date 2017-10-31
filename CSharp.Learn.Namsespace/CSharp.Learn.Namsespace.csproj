@@ -44,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AritmetikOperasyon.cs" />
+    <Compile Include="DegiskenTanimlama.cs" />
+    <Compile Include="Diziler.cs" />
+    <Compile Include="Donguler.cs" />
+    <Compile Include="KararYapıları.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

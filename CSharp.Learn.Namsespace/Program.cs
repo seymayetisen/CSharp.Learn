@@ -10,12 +10,24 @@ namespace CSharp.Learn.Namsespace
     {
         static void Main(string[] args)
         {
-            int x = 5;
+            byte a = 10;
+            //a = 256;
+            //a = "a";
 
-            for (int i = 0; i < 10; i++)
-            {
-                x += i;
-            }
+            int x = a;
+
+            //a = x;
+
+            float y = 5.2f;
+            //x =y;
+            y = x;
+
+            string s = "abscd";
+            //char[] cs = new[] { 'a', 'b', 's', 'c', 'd' };
+
+            char c = 'c';
+
+            c = s[0];
         }
     }
 }
