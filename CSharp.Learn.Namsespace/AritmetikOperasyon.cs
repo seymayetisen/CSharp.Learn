@@ -6,16 +6,13 @@ using System.Threading.Tasks;
 
 namespace CSharp.Learn.Namsespace
 {
-    class Program
+    public class AritmetikOperasyon
     {
-        static void Main(string[] args)
+        public int Operasyon(int sayi1, int sayi2, char operand)
         {
-            int x = 5;
+            var sonuc = 0;
 
-            for (int i = 0; i < 10; i++)
-            {
-                x += i;
-            }
+            return sonuc;
         }
     }
 }
