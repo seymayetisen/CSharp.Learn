@@ -13,6 +13,7 @@ namespace CSharp.Learn.Namsespace
             var sonuc = 0;
 
             return sonuc;
+            
         }
     }
 }
