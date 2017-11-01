@@ -58,6 +58,11 @@ namespace CSharp.Learn.Namsespace
             }
         }
 
+        public void Do()
+        {
+
+        }
+
         public bool Aradami(int i)
         {
             return i >= 0 && i <= 10;
