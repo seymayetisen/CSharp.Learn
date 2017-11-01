@@ -14,6 +14,7 @@ namespace CSharp.Learn.Namsespace
 
             return sonuc;
             
+            
         }
     }
 }

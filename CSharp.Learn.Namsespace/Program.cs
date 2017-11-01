@@ -28,6 +28,12 @@ namespace CSharp.Learn.Namsespace
             char c = 'c';
 
             c = s[0];
+
+            var sa = new[] { 1, 2, 3 };
+            foreach (var item in sa)
+            {
+                Console.WriteLine(item);
+            }
         }
     }
 }
