@@ -60,7 +60,13 @@ namespace CSharp.Learn.Namsespace
 
         public void Do()
         {
+            int a = 0;
 
+            do
+            {
+                Console.WriteLine(a);
+                a++;
+            } while (a < 10);
         }
 
         public bool Aradami(int i)
