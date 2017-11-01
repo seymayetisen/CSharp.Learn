@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basics", "Basics", "{EFAF0107-0A41-4796-A95A-6340D7DA6116}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.Learn.Namsespace", "CSharp.Learn.Namsespace\CSharp.Learn.Namsespace.csproj", "{A5F90B86-EDB9-4AD3-A293-220C2F355D20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hesapMak", "hesapMak\hesapMak.csproj", "{115BAB77-5E14-46D1-A906-D5FB307CBF40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,10 @@ Global
 		{A5F90B86-EDB9-4AD3-A293-220C2F355D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5F90B86-EDB9-4AD3-A293-220C2F355D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5F90B86-EDB9-4AD3-A293-220C2F355D20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{115BAB77-5E14-46D1-A906-D5FB307CBF40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{115BAB77-5E14-46D1-A906-D5FB307CBF40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{115BAB77-5E14-46D1-A906-D5FB307CBF40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{115BAB77-5E14-46D1-A906-D5FB307CBF40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

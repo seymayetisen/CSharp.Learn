@@ -24,7 +24,7 @@ namespace CSharp.Learn.Namsespace
 
             string s = "abscd";
             //char[] cs = new[] { 'a', 'b', 's', 'c', 'd' };
-
+            
             char c = 'c';
 
             c = s[0];
@@ -32,6 +32,7 @@ namespace CSharp.Learn.Namsespace
             var sa = new[] { 1, 2, 3 };
             foreach (var item in sa)
             {
+                
                 Console.WriteLine(item);
             }
         }
