@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.Learn.Namsespace", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hesapMak", "hesapMak\hesapMak.csproj", "{115BAB77-5E14-46D1-A906-D5FB307CBF40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metindeBul", "metindeBul\metindeBul.csproj", "{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{115BAB77-5E14-46D1-A906-D5FB307CBF40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{115BAB77-5E14-46D1-A906-D5FB307CBF40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{115BAB77-5E14-46D1-A906-D5FB307CBF40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
