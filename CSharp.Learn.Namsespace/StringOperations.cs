@@ -135,6 +135,7 @@ namespace CSharp.Learn.Namsespace
         }
         #endregion
 
+
         #region Uygulamalar
         public void KelimeSayilariniBul(string metin)
         {
