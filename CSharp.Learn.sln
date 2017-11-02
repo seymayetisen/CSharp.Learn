@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hesapMak", "hesapMak\hesapM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "metindeBul", "metindeBul\metindeBul.csproj", "{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "isimgirme", "isimgirme\isimgirme.csproj", "{EAE294B8-B948-4CC9-B06E-8C84AC618A99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E2C9A4B-16C1-43AB-948E-D4BB5A997097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE294B8-B948-4CC9-B06E-8C84AC618A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE294B8-B948-4CC9-B06E-8C84AC618A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE294B8-B948-4CC9-B06E-8C84AC618A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE294B8-B948-4CC9-B06E-8C84AC618A99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
