@@ -23,11 +23,18 @@ namespace CSharp.Learn.Namsespace
 
             var dizi4 = dizi3;
 
+            Console.WriteLine(dizi4[0]);
+
+            dizi4[1] = false;
+            Console.WriteLine(dizi3[1]);
+
             dizi[0] = 0;
             dizi[1] = 4;
             dizi[2] = 1;
             dizi[3] = 16;
             dizi[4] = 9;
+
+
             Console.WriteLine("Tek Boyutlu dizi");
             Console.WriteLine($"Length: {dizi.Length}");
             Console.WriteLine($"LongLength: {dizi.LongLength}");
@@ -35,7 +42,7 @@ namespace CSharp.Learn.Namsespace
             Console.WriteLine();
             int a = dizi[0];
             
-            int[,] cokBoyutluDizi = new int[3, 5];
+            int[,] cokBoyutluDizi = new int[10,3];
             Console.WriteLine("Çok Boyutlu dizi");
             Console.WriteLine($"Length: {cokBoyutluDizi.Length}");
             Console.WriteLine($"LongLength: {cokBoyutluDizi.LongLength}");
