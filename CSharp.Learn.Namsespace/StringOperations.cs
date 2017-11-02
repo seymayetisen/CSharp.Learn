@@ -132,8 +132,6 @@ namespace CSharp.Learn.Namsespace
             string solTrimDeger = "   sdfdsf   ".TrimStart();//"sdfdsf   "
             string sagTrimDeger = "   sdfdsf   ".TrimEnd();//"   sdfdsf"
 
-            var dizi = new int[metin.Length];
-
         }
         #endregion
 
