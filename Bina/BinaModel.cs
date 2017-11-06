@@ -8,10 +8,13 @@ namespace Bina
 {
     public class BinaModel
     {
-        public string ad;
-        public string renk;
-        public Kapi[] BinaKapisi;
-        public Pencere[] pencereler;
-        public Daire[] daireler;
+       
+            public string ad;
+            public string renk;
+            public Kapi[] BinaKapisi;
+            public Pencere[] pencereler;
+            public Daire daireler;
+    
+        
     }
 }

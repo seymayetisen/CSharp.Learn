@@ -16,8 +16,12 @@ namespace BinaYönetimi
             binamodel.renk = "yesil";
 
             Console.WriteLine($"bina adi:{binamodel.ad}");
+            binamodel.daireler = new Daire();
+            binamodel.BinaKapisi = new Kapi[2];
+            binamodel.BinaKapisi[0].kilit = "acik";
+           
 
-            
+            Console.ReadKey();
         }
     }
 }
