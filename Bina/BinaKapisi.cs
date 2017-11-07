@@ -8,7 +8,7 @@ namespace Bina
     public class BinaKapisi : Kapi
     {
         public string Otomatik;
-
+        
         /* Kapi class'ının inheritance edilmesi sonucu BinaKapisi class'ına kazandırılan öğeler
         public string Govde;
         public string Kulp;
