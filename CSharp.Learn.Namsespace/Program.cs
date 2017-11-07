@@ -30,7 +30,7 @@ namespace CSharp.Learn.Namsespace
             c = s[0];
 
             var so = new StringOperations();
-            so.KelimeSayilariniBul(Console.ReadLine());
+           // so.KelimeSayilariniBul(Console.ReadLine());
         }
     }
 }
