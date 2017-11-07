@@ -9,13 +9,14 @@ namespace CSharp.Learn.Namsespace
 {
     public class StringOperations
     {
+        #region Örnekler
         public void StringOp()
         {
             string a = "merhaba";
             string b = "dünya!";
 
             //Burada a değişkenine atama yapılırken a'nın var olduğu yere yeni değer yazılmaz. Yeni bir alan oluşturulup yeni değer buraya yazılır.
-            a = a +" "+  b;
+            a = a + " " + b;
 
             var sb = new StringBuilder("Merhaba");
             sb.Append(" ");
@@ -56,7 +57,7 @@ namespace CSharp.Learn.Namsespace
             //Bundan sonra istenilen sayıda parametre girilebilir. 
             //Girilen her parametre, tanımlandığı sıra numarası ile {} arasında çağrılır. Örneğin isim değişkeni stringden sonra gelen ilk değişken olduğu içinj {0} ile çağırılır.
             string mesaj = string.Format("Merhaba {0} {1} \n {2}. Yaşın kutlu olsun", isim, soyisim, yas);
-            
+
             //Tanımlanan parametrelerin hepsi çağırılmak zorunda değildir.
             string mesaj2 = string.Format("\n Sevgili {0} , \n {2}. yaşına ulaşabildiğin çok şanslısın.", isim, soyisim, yas);
 
@@ -97,7 +98,9 @@ namespace CSharp.Learn.Namsespace
             string tamamiKucukHarfEng = metin.ToLower();
             string tamamiBuyukHarfEng = metin.ToUpper();
             string tamamiBuyukHarfTr = metin.ToUpper(CultureInfo.GetCultureInfo("en-us"));
-            string[] kelimeListesi = metin.Split(new[] { ' ' });
+            string[] kelimeListesi = metin.Split(' ');
+            string[] kelimeListesi2 = metin.Split(new[] { ' ', '.', ',', ';' });
+            string[] kelimeListesi3 = metin.Split(new[] { ' ', '.', ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
             string metinleriAyracIleBirlestir = string.Join("---", kelimeListesi);
 
@@ -107,10 +110,122 @@ namespace CSharp.Learn.Namsespace
             bool LHarfiIleMiBasliyor = metin.StartsWith("L");//true
             bool lHarfiIleMiBasliyorCaseInsensetive = metin.StartsWith("l", StringComparison.OrdinalIgnoreCase);//true StringComparison.OrdinalIgnoreCase parametresi büyük-küçük harf farkını gözardı eder.
             bool bHarfiIleMiBitiyor = metin.EndsWith("b");//false
+            bool bosMu = string.IsNullOrEmpty("");//True
+            bool bosMu2 = string.IsNullOrEmpty(" ");//False
+            bool bosMu3 = string.IsNullOrEmpty(" a");//False
+            bool bosMu4 = string.IsNullOrEmpty(" a    ");//False
+            bool boslukMu = string.IsNullOrWhiteSpace("");//true
+            bool boslukMu2 = string.IsNullOrWhiteSpace("\n\t");//true
+            bool boslukMu3 = string.IsNullOrWhiteSpace("  ");//true
+            bool boslukMu3_1 = string.IsNullOrWhiteSpace(",");//false
+            bool boslukMu4 = string.IsNullOrWhiteSpace("a12");//false
+            bool boslukMu5 = string.IsNullOrWhiteSpace("   a    ");//false
 
-            var dizi = new int[metin.Length];
+            string yeniDeger = metin.Replace("at", "ot");
+            string yeniDeger2 = metin.Replace("at", "");
+            string metin2 = "kabahat";
+            string yeniDeger3 = metin2.Replace("at", "otcul").Replace("ot", "at");
+                                //"kabahotcul".Replace("ot", "at") 
+                                //"kabahatcul"
+            string trimlenmisDeger = "   sdfdsf   ".Trim();//"sdfdsf"
+            string trimlenmisDeger2 = "  sdf     dsf   ".Trim();//"sdf     dsf"
+            string solTrimDeger = "   sdfdsf   ".TrimStart();//"sdfdsf   "
+            string sagTrimDeger = "   sdfdsf   ".TrimEnd();//"   sdfdsf"
+
+        }
+        #endregion
+
+
+        #region Uygulamalar
+        public void KelimeSayilariniBul(string metin)
+        {
+            var kelimeler = metin.Split(' ');
+            var sayilar = new int[kelimeler.Length];
+            //lorem lorem, lorem;
+            for (int i = 0; i < kelimeler.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(kelimeler[i]))
+                {
+                    continue;
+                }
+
+                string aranan = kelimeler[i];
+                for (int j = 0; j < kelimeler.Length; j++)
+                {
+                    if (kelimeler[j] == aranan)
+                    {
+                        sayilar[i]++;
+                        kelimeler[j] = "";
+                    }
+                }
+
+                kelimeler[i] = aranan;
+            }
+
+            for (int i = 0; i < kelimeler.Length; i++)
+            {
+                if (kelimeler[i] != "")
+                {
+                    Console.WriteLine($"{kelimeler[i]} -> {sayilar[i]}");
+                }
+            }
+
+            Console.ReadKey();
         }
 
+        public void GirilenMetinBosMuKontroluYap()
+        {
+            string girdi;
+            //do
+            //{
+            //    girdi = Console.ReadLine();
+
+            //    if (string.IsNullOrWhiteSpace(girdi))
+            //    {
+            //        Console.WriteLine("Lütfen geçerli bir metin giriniz.");
+            //    }
+            //} while (string.IsNullOrWhiteSpace(girdi));
+
+
+            do
+            {
+                girdi = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(girdi))
+                {
+                    break;
+                }
+
+                Console.WriteLine("Lütfen geçerli bir metin giriniz.");
+            } while (true);
+            Console.ReadKey();
+        }
+
+        public void EnUzunKelimeyiBul()
+        {
+            //. , ; ' " - ? :
+            string metin = Console.ReadLine();
+            //metin = metin.Replace(".", "").Replace(",", "").Replace(";", "").Replace("'", "").Replace("\"", "").Replace("-", "").Replace("?", "").Replace(":", "");
+
+            //var kelimeler = metin.Split(' ');
+
+            //string metin = Console.ReadLine().Replace(".", "").Replace(",", "").Replace(";", "").Replace("'", "").Replace("\"", "").Replace("-", "").Replace("?", "").Replace(":", "");
+
+
+            var kelimeler = metin.Split(new[] { ' ', '.', ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string enUzunKelime = "";
+
+            foreach (var kelime in kelimeler)
+            {
+                if(kelime.Length > enUzunKelime.Length)
+                {
+                    enUzunKelime = kelime;
+                }
+            }
+
+            Console.WriteLine($"En uzun kelime: {enUzunKelime}, Harf sayısı: {enUzunKelime.Length}");
+        }
+        #endregion
         
     }
 }
