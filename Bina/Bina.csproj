@@ -40,14 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banyo.cs" />
     <Compile Include="BinaModel.cs" />
     <Compile Include="Daire.cs" />
     <Compile Include="Ebatlar.cs" />
     <Compile Include="BinaKapisi.cs" />
     <Compile Include="DaireKapisi.cs" />
     <Compile Include="GelismisDaireKapisi.cs" />
+    <Compile Include="GenelAmacliOda.cs" />
     <Compile Include="Kapi.cs" />
+    <Compile Include="Kilit.cs" />
+    <Compile Include="Mutfak.cs" />
     <Compile Include="Oda.cs" />
+    <Compile Include="OdaKapisi.cs" />
     <Compile Include="Pencere.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
