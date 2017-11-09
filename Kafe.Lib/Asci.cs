@@ -21,8 +21,14 @@ namespace KafeYonetim.Lib
             {
                 kalem.Durum = SiparisDurum.Hazirlaniyor;
             }
-
+            
             Console.WriteLine("Sipariş Hazırlandı.");
+            
         }
+        public void asciGarsonCagır(Siparis siparis)
+        {
+            Garson garson = siparis.SiparisiAlanGarson;
+        }
+             
     }
 }

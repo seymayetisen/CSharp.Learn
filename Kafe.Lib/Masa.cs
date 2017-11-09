@@ -18,10 +18,10 @@ namespace KafeYonetim.Lib
 
         public void GarsonCagir()
         {
-            if(!(Garson is null))
-            {
-                return;
-            }
+            //if(!(Garson is null))
+            //{
+            //    return;
+            //}
 
             Garson = Kafe.UygunGarsonuBul(CalisanDurum.Masada);
 
@@ -48,6 +48,11 @@ namespace KafeYonetim.Lib
             GarsonuSerbestBirak();
 
             Console.WriteLine("Sipariş verildi.");
+        }
+        public void teslim()
+        {
+            Siparis = Siparis ?? new Siparis();
+            Siparis.SiparisiHazirlayanAsci.asciGarsonCagır(Siparis);
         }
 
         public void OdemeYap()
@@ -102,5 +107,7 @@ namespace KafeYonetim.Lib
 
             Console.ReadKey();
         }
+
+      
     }
 }

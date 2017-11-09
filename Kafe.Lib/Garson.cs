@@ -22,13 +22,16 @@ namespace KafeYonetim.Lib
         {
             Siparisler.Add(siparis);
             Asci asci = Kafe.UygunAsciBul(CalisanDurum.Uygun);//OVERLOAD
+            siparis.SiparisiHazirlayanAsci = asci;
             asci.SiparisiHazirla(siparis);
 
             Console.WriteLine("Sipariş alındı.");
+            
         }
 
         public void SiparisiServisEt()
         {
+           
             Console.WriteLine("Sipariş servis edildi.");
         }
 

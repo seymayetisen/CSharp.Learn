@@ -31,6 +31,7 @@ namespace KafeYonetim.Sunum.ConsoleApp
                     case '2': GarsonuMasadanGonder(); break;
                     case '3': SiparisVer(); break;
                     case '4': MasaSiparisiniKontrolEt(); break;
+                    case '5': SiparisiTeslimEt(); break;
                     case 't': BreakPoint();break; 
                     default:
                         break;
@@ -57,6 +58,7 @@ namespace KafeYonetim.Sunum.ConsoleApp
             int masaNo = int.Parse(Console.ReadLine());
 
             kafe.Masalar[masaNo].GarsonCagir();
+            
         }
 
         public static void GarsonuMasadanGonder()
@@ -74,6 +76,21 @@ namespace KafeYonetim.Sunum.ConsoleApp
             int masaNo = int.Parse(Console.ReadLine());
             kafe.Masalar[masaNo].SiparisVer();
         }
+        public static void SiparisiTeslimEt()
+        {
+            Console.Clear();
+            Console.Write("Masa numarasını belirtin: ");
+            int masaNo = int.Parse(Console.ReadLine());
+            if (kafe.Masalar[masaNo].Siparis != null && kafe.Masalar[masaNo].Garson != null)
+            {
+                kafe.Masalar[masaNo].Siparis.SiparisiAlanGarson = kafe.Masalar[masaNo].Garson;
+                kafe.Masalar[masaNo].teslim();
+            }
+            else
+            {
+                Console.WriteLine("siparis verilmedi yada garson garson çağırılmadi...");
+            }
+        }
 
         public static void MenuYazdir()
         {
@@ -83,6 +100,8 @@ namespace KafeYonetim.Sunum.ConsoleApp
             Console.WriteLine("2. Garsonu Serbest Bırak");
             Console.WriteLine("3. Masadan Garsona Sipariş Ver");
             Console.WriteLine("4. MasaSiparişini Kontrol Et");
+            Console.WriteLine("5. Siparisi teslim Et");
+
             Console.WriteLine("0. Uygulamayaı kapat");
             Console.WriteLine();
             Console.Write("Bir seçim yapınız: ");
