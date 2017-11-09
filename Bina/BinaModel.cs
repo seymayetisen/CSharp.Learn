@@ -17,34 +17,33 @@ namespace Bina
 
         public BinaModel(string ad)
         {
-            _ad = ad;
+            Ad = ad;
         }
+
+        public int MyProperty { get; set; }
 
         private string _ad;
 
-        public string Ad {
-            get {
-                if (_ad.Length < 20)
-                {
-                    return Renk;
-                }
-
-                return _ad;
-            }
-
-            set
-            {
-                if(string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException("Ad bilgisi boş olamaz.");
-                }
-
-                _ad = value;
-            }
-        }
+        public string Ad     { get; }
 
 
-        public string Renk;
+        //private string _renk;
+
+
+        //public string Renk
+        //{
+        //    get
+        //    {
+        //        return _renk;
+        //    }
+        //    set
+        //    {
+        //        _renk = value;
+        //    }
+        //}
+
+        public string Renk { get; set; }
+
         public BinaKapisi[] BinaKapsi;
         public Pencere[] Pencereler;
         private Daire[] Daireler;
