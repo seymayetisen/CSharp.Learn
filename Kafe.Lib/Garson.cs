@@ -8,7 +8,7 @@ namespace KafeYonetim.Lib
 {
     public class Garson: Calisan
     {
-        public Garson(string i, DateTime g): base(i, g)
+        public Garson(string i, DateTime g, Kafe k): base(i, g, k)
         {
 
         }
@@ -18,8 +18,12 @@ namespace KafeYonetim.Lib
             Console.WriteLine("Masa açıldı.");
         }
 
-        public void SiparisAl()
+        public void SiparisAl(Siparis siparis)
         {
+            Siparisler.Add(siparis);
+            Asci asci = Kafe.UygunAsciBul(CalisanDurum.Uygun);//OVERLOAD
+            asci.SiparisiHazirla(siparis);
+
             Console.WriteLine("Sipariş alındı.");
         }
 
