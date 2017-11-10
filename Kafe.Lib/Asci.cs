@@ -24,5 +24,16 @@ namespace KafeYonetim.Lib
 
             Console.WriteLine("Sipariş Hazırlandı.");
         }
+
+        public void SiparisHazirlandi(Siparis siparis)
+        {
+            foreach (var kalem in siparis.Kalemler)
+            {
+                kalem.Durum = SiparisDurum.Hazirlandi;
+            }
+
+            siparis.SiparisiAlanGarson.SiparisiServisEt(siparis);
+            siparis.SiparisiHazirlayanAsci = null;
+        }
     }
 }

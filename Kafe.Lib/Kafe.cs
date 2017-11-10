@@ -24,11 +24,26 @@ namespace KafeYonetim.Lib
             Siparisler = new List<Siparis>();
         }
 
+        internal Asci UygunAsciBul()
+        {
+            return UygunAsciBul(CalisanDurum.Uygun);
+        }
+
         internal Asci UygunAsciBul(CalisanDurum yeniDurum)
+        {
+            return UygunCalisanBul<Asci>(yeniDurum);
+        }
+
+        public Garson UygunGarsonuBul(CalisanDurum yeniDurum)
+        {
+            return UygunCalisanBul<Garson>(yeniDurum);
+        }
+
+        internal T UygunCalisanBul<T>(CalisanDurum yeniDurum) where T : Calisan
         {
             foreach (var calisan in Calisanlar)
             {
-                if (!(calisan is Asci))
+                if (!(calisan is T))
                 {
                     continue;
                 }
@@ -36,12 +51,50 @@ namespace KafeYonetim.Lib
                 if (calisan.MesaideMi && calisan.Durum == CalisanDurum.Uygun)
                 {
                     calisan.Durum = yeniDurum;
-                    return (Asci)calisan;
+                    return (T)calisan;
                 }
             }
 
             return null;
         }
+
+        //internal Asci UygunAsciBul(CalisanDurum yeniDurum)
+        //{
+        //    foreach (var calisan in Calisanlar)
+        //    {
+        //        if (!(calisan is Asci))
+        //        {
+        //            continue;
+        //        }
+
+        //        if (calisan.MesaideMi && calisan.Durum == CalisanDurum.Uygun)
+        //        {
+        //            calisan.Durum = yeniDurum;
+        //            return (Asci)calisan;
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
+        //public Garson UygunGarsonuBul(CalisanDurum yeniDurum)
+        //{
+        //    foreach (var calisan in Calisanlar)
+        //    {
+        //        if (!(calisan is Garson))
+        //        {
+        //            continue;
+        //        }
+
+        //        if (calisan.MesaideMi && calisan.Durum == CalisanDurum.Uygun)
+        //        {
+        //            calisan.Durum = yeniDurum;
+        //            return (Garson)calisan;
+        //        }
+        //    }
+
+        //    return null;
+        //}
 
         public string Ad { get; private set; }
         public string AcilisSaati { get; private set; }
@@ -57,7 +110,7 @@ namespace KafeYonetim.Lib
             Durum = KafeDurum.Acik;
             foreach (var calisan in Calisanlar)
             {
-                calisan.MesaiyeBasladi(); 
+                calisan.MesaiyeBasladi();
             }
         }
 
@@ -66,23 +119,6 @@ namespace KafeYonetim.Lib
             Durum = KafeDurum.Kapali;
         }
 
-        public Garson UygunGarsonuBul(CalisanDurum yeniDurum)
-        {
-            foreach (var calisan in Calisanlar)
-            {
-                if(!(calisan is Garson))
-                {
-                    continue;
-                }
-
-                if(calisan.MesaideMi && calisan.Durum == CalisanDurum.Uygun)
-                {
-                    calisan.Durum = yeniDurum;
-                    return (Garson)calisan;
-                }
-            }
-
-            return null;
-        }
+        
     }
 }

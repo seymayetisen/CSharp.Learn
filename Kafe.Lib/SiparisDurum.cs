@@ -4,6 +4,7 @@
     {
         Alindi,
         Hazirlaniyor,
-        TeslimEdildi
+        TeslimEdildi,
+        Hazirlandi
     }
 }

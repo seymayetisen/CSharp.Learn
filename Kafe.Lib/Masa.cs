@@ -52,7 +52,13 @@ namespace KafeYonetim.Lib
 
         public void OdemeYap()
         {
-            Console.WriteLine("Odeme yapıldı.");
+            GarsonCagir();
+            Durum = MasaDurum.Bos;
+            Console.WriteLine($"Toplam {Siparis.ToplamFiyat} TL Ödeme yapıldı.");
+            Siparis = null;
+
+            Console.ReadKey();
+            GarsonuSerbestBirak();
         }
 
         private void UrunSecimEkrani()
@@ -88,6 +94,7 @@ namespace KafeYonetim.Lib
             } while (true);
 
             Console.WriteLine("Sipariş alındı");
+            Console.ReadKey();
         }
 
         public void SiparisiKontrolEt()
@@ -100,6 +107,7 @@ namespace KafeYonetim.Lib
                 Console.WriteLine($"{kalem.Urun.Ad} - {kalem.Durum}");
             }
 
+            Console.WriteLine($"\nToplam tutar: {Siparis.ToplamFiyat}");
             Console.ReadKey();
         }
     }
