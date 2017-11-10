@@ -52,7 +52,8 @@ namespace KafeYonetim.Lib
         public void teslim()
         {
             Siparis = Siparis ?? new Siparis();
-            Siparis.SiparisiHazirlayanAsci.asciGarsonCagır(Siparis);
+            Siparis.SiparisiHazirlayanAsci;
+            //Siparis.
         }
 
         public void OdemeYap()
