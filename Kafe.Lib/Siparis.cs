@@ -1,9 +1,16 @@
-﻿namespace KafeYonetim.Lib
+﻿using System.Collections.Generic;
+
+namespace KafeYonetim.Lib
 {
     public class Siparis
     {
+        public Siparis()
+        {
+            Kalemler = new List<Kalem>();
+        }
+
         public int SiparisNo { get; private set; }
-        public Kalem[] Kalemler { get; set; }
+        public List<Kalem> Kalemler { get; set; }
         public Garson SiparisiAlanGarson { get; set; }
         public Asci SiparisiHazirlayanAsci { get; set; }
         public Masa Masa { get; set; }

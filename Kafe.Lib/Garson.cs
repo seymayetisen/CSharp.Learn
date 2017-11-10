@@ -8,7 +8,7 @@ namespace KafeYonetim.Lib
 {
     public class Garson: Calisan
     {
-        public Garson(string i, DateTime g): base(i, g)
+        public Garson(string i, DateTime g, Kafe k): base(i, g, k)
         {
 
         }
@@ -18,13 +18,30 @@ namespace KafeYonetim.Lib
             Console.WriteLine("Masa açıldı.");
         }
 
-        public void SiparisAl()
+        //Method Signature - Metod imzası
+        //  1. Metodun adı
+        //  2. Parametre sayısı
+        //  3. Parametre tipleri
+        public void SiparisAl(Siparis siparis)
         {
+            Siparisler.Add(siparis);
+            Asci asci = Kafe.UygunAsciBul();//OVERLOAD
+            siparis.SiparisiHazirlayanAsci = asci;
+            asci.SiparisiHazirla(siparis);
+            Kafe.Siparisler.Add(siparis);
             Console.WriteLine("Sipariş alındı.");
         }
-
-        public void SiparisiServisEt()
+        
+        public void SiparisiServisEt(Siparis siparis)
         {
+            foreach (var kalem in siparis.Kalemler)
+            {
+                kalem.Durum = SiparisDurum.TeslimEdildi;
+            }
+
+            siparis.SiparisiAlanGarson.Durum = CalisanDurum.Uygun;
+            siparis.SiparisiAlanGarson = null;
+
             Console.WriteLine("Sipariş servis edildi.");
         }
 
