@@ -101,6 +101,8 @@ namespace KafeYonetim.Lib
         public string KapanisSaati { get; private set; }
         public KafeDurum Durum { get; private set; }
         public List<Calisan> Calisanlar { get; set; }
+        //public List<Garson> Garsonlar { get; set; }
+        //public List<Asci> Ascilar { get; set; }
         public List<Urun> Urunler { get; set; }
         public List<Masa> Masalar { get; set; }
         public List<Siparis> Siparisler { get; set; }
