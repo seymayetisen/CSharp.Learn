@@ -10,11 +10,8 @@ namespace Static
     {
         static void Main(string[] args)
         {
-            StaticOlmayanClass a = new StaticOlmayanClass();
-            Console.WriteLine(a.getir());
-            StaticOlmayanClass b = new StaticOlmayanClass();
-            Console.WriteLine(b.getir());
-
+            StaticOlmayanClass s = new StaticOlmayanClass();
+            s.getir();
         }
     }
 }

@@ -4,9 +4,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C104F238-8818-426E-B915-472500B2F0D4}</ProjectGuid>
+    <ProjectGuid>{668041A0-7D77-49AB-850C-8048FC46A05A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>static</RootNamespace>
+    <RootNamespace>Static</RootNamespace>
     <AssemblyName>Static</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaticOlmayanClass1.cs" />
+    <Compile Include="StaticOlmayanClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
