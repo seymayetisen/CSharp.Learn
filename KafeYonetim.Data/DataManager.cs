@@ -176,19 +176,12 @@ namespace KafeYonetim.Data
             Console.ReadLine();
         }
 
-        public static void UrunGir()
+        public static string UrunGir(string ad,double fiyat,char eh)
         {
             using (var connection = CreateConnection())
             {
-
-                Console.Write("Ürün Adını giriniz: ");
-                var ad = Console.ReadLine();
-
-                Console.Write("Ürün fiyatını giriniz: ");
-                var fiyat = double.Parse(Console.ReadLine());
-
-                Console.Write("Ürün stokta var mı? (e/h): ");
-                var stok = (Console.ReadLine() == "e") ? true : false;
+                
+                var stok = (eh == 'e') ? true : false;
 
                 var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
                 command.Parameters.AddWithValue("@ad", ad);
@@ -199,12 +192,14 @@ namespace KafeYonetim.Data
 
                 if (result > 0)
                 {
-                    Console.WriteLine("Kayıt eklendi.");
+                    return "Kayıt eklendi.";
                 }
-
+                else
+                {
+                    return "kayıt eklenemedi";
+                }
             }
-
-            Console.ReadLine();
+            
         }
 
         public static void SecilenUrunleriSil()
