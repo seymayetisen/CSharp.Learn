@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafeYönetim.Data", "KafeY�
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafeYönetim.Sunum.AnaUygulama", "KafeYönetim.Sunum.AnaUygulama\KafeYönetim.Sunum.AnaUygulama.csproj", "{BB849F91-7CBB-478A-8B5D-47627E8D3B53}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Static", "ConsoleApp1\Static.csproj", "{C104F238-8818-426E-B915-472500B2F0D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{BB849F91-7CBB-478A-8B5D-47627E8D3B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB849F91-7CBB-478A-8B5D-47627E8D3B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB849F91-7CBB-478A-8B5D-47627E8D3B53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C104F238-8818-426E-B915-472500B2F0D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C104F238-8818-426E-B915-472500B2F0D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C104F238-8818-426E-B915-472500B2F0D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C104F238-8818-426E-B915-472500B2F0D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +87,6 @@ Global
 		{9906DCE0-6215-46E9-B8DA-615DF7A1B267} = {EFAF0107-0A41-4796-A95A-6340D7DA6116}
 		{A40F309A-875B-405A-A185-9E91E5966488} = {2BF20519-6EEC-4782-A468-0C5A29132F26}
 		{BB849F91-7CBB-478A-8B5D-47627E8D3B53} = {2BF20519-6EEC-4782-A468-0C5A29132F26}
+		{C104F238-8818-426E-B915-472500B2F0D4} = {2BF20519-6EEC-4782-A468-0C5A29132F26}
 	EndGlobalSection
 EndGlobal

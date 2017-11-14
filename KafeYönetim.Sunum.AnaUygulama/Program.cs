@@ -11,13 +11,16 @@ namespace KafeYönetim.Sunum.AnaUygulama
     {
         static void Main(string[] args)
         {
-            DataManager a = new DataManager();
-            a.KafeBilgisiniYazdir();
-            a.UrunListesiniYazdir();
-            a.kafeIsminiGetir();
+            // DataManager a = new DataManager();
+            //a.KafeBilgisiniYazdir();
+            //a.UrunListesiniYazdir();
+            //a.kafeIsminiGetir();
             //a.urunFiyatiniGetir();
             //a.yuksek();
-            a.urunEkleme();
+            // a.urunEkleme();
+
+            //a.urunSilme();
+            DataManager.urunSilme();
         }
     }
 }
