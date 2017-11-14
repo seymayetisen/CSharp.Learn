@@ -145,7 +145,24 @@ namespace KafeYönetim.Data
             }
             UrunListesiniYazdir();
         }
-        
+        public static void urunIsmiGuncelleme()
+        {
+            UrunListesiniYazdir();
+            Console.WriteLine("silmek istediğiniz id'yi giriniz : ");
+            int id = int.Parse(Console.ReadLine());
+            Console.WriteLine("yeni isim giriniz : ");
+            string yeniIsim = Console.ReadLine();
+
+            using (SqlConnection baglanti=createConnection())
+            {
+                SqlCommand komut = new SqlCommand("update urunler set ad=@yeniIsim where id= @id", baglanti);
+                komut.Parameters.AddWithValue("@id", id);
+                komut.Parameters.AddWithValue("@yeniIsim", yeniIsim);
+                komut.ExecuteNonQuery();
+            }
+            UrunListesiniYazdir();
+
+        }
 
     }
 }

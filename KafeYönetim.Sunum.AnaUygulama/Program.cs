@@ -20,7 +20,8 @@ namespace KafeYönetim.Sunum.AnaUygulama
             // a.urunEkleme();
 
             //a.urunSilme();
-            DataManager.urunSilme();
+            //DataManager.urunSilme();
+            DataManager.urunIsmiGuncelleme();
         }
     }
 }
