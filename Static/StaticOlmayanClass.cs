@@ -14,7 +14,7 @@ namespace Static
             i++;
 
         }
-        public void getir()
+        public int getir()
         {
             return i;
         }
