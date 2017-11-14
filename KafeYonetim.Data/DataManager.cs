@@ -180,7 +180,6 @@ namespace KafeYonetim.Data
         {
             using (var connection = CreateConnection())
             {
-                
                 var stok = (eh == 'e') ? true : false;
 
                 var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
