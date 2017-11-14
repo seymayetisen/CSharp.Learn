@@ -16,7 +16,7 @@ namespace BinaYonetim
 
             model.Renk = "Yeşil";
 
-            model.Ad = "123456789123456700000";
+            //model.Ad = "123456789123456700000";
 
             Console.WriteLine(model.Ad);
 

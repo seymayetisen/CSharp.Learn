@@ -11,21 +11,23 @@ namespace KafeYonetim.Sunum.AnaUygulama
     {
         static void Main(string[] args)
         {
-            var dataManager = new DataManager();
 
-            //dataManager.KafeBilgisiniYazdir();
+            DataManager.KafeBilgisiniYazdir();
 
             //dataManager.UrunListesiniYazdir();
 
             //dataManager.KafeAdiniGetir();
 
-            //dataManager.UrunFiyatiniGetir();
+            DataManager.UrunFiyatiniGetir();
 
             //dataManager.DegerdenYuksekFiyatliUrunleriGetir();
 
-            dataManager.UrunGir();
+            //dataManager.UrunGir();
 
-            Console.ReadLine();
+           // dataManager.KapatilmamimsBaglanti();
+
+            //dataManager.SecilenUrunleriSil();
+
         }
     }
 }
