@@ -13,7 +13,7 @@ namespace Bina.Kapi
         public override void KapiyiAc()
         {
             Console.WriteLine("Kapı içeri doğru hareket ettir.");
-            base.KapiyiAc();
+            //base.KapiyiAc();
         }
 
         public void KapiyiKapat()

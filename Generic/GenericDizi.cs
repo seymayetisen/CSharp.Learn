@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Generic
 {
-    public class StackGeneric<T>  
+    public class StackGeneric<T>
     {
         private T[] Dizi { get; set; }
         private int sonElemaninIndisNumarasi;
@@ -15,9 +15,6 @@ namespace Generic
         {
             Dizi = new T[100];
             sonElemaninIndisNumarasi = 0;
-
-            T a = Dizi[0];
-
         }
 
         public void Push(T item)
@@ -55,9 +52,38 @@ namespace Generic
 
     //    public string Pop()
     //    {
+    //        sonElemaninIndisNumarasi--; ;
+
     //        var element = Dizi[sonElemaninIndisNumarasi];
     //        Dizi[sonElemaninIndisNumarasi] = "";
+    //        return element;
+    //    }
+
+    //}
+
+    //public class StackInt
+    //{
+    //    private int[] Dizi { get; set; }
+    //    private int sonElemaninIndisNumarasi;
+
+    //    public StackInt()
+    //    {
+    //        Dizi = new int[100];
+    //        sonElemaninIndisNumarasi = 0;
+    //    }
+
+    //    public void Push(int item)
+    //    {
+    //        Dizi[sonElemaninIndisNumarasi] = item;
+    //        sonElemaninIndisNumarasi++;
+    //    }
+
+    //    public int Pop()
+    //    {
     //        sonElemaninIndisNumarasi--; ;
+
+    //        var element = Dizi[sonElemaninIndisNumarasi];
+    //        Dizi[sonElemaninIndisNumarasi] = 0;
     //        return element;
     //    }
 
