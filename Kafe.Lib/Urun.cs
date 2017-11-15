@@ -2,7 +2,7 @@
 {
     public class Urun
     {
-        public Urun(string ad, float fiyat, bool stoktaVarMi)
+        public Urun(string ad, double fiyat, bool stoktaVarMi)
         {
             Ad = ad;
             Fiyat = fiyat;
@@ -10,7 +10,7 @@
         }
 
         public string Ad { get; private set; }
-        public float Fiyat { get; private set; }
+        public double Fiyat { get; private set; }
         public bool StoktaVarmi { get; set; }
     }
 }
