@@ -1,4 +1,5 @@
 ﻿using KafeYonetim.Data;
+using KafeYonetim.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +31,71 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
             //UrunGir();
 
-            DegerdenYuksekFiyatliUrunleriGetir();
+            //DegerdenYuksekFiyatliUrunleriGetir();
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("DegerdenYuksekFiyatliUrunleriGetir   1");
+                Console.WriteLine("UrunListesiniYazdir                  2");
+                Console.WriteLine("stokda olmatan ürünleri getir        3");
+                Console.WriteLine("urunleri sil                         4");
+                Console.WriteLine("urun gir                             5");
+                Console.WriteLine();
+                Console.WriteLine("cıkmak için                          h");
+                //
 
+
+                string secim = Console.ReadLine();
+                switch (secim)
+                {
+                    case "1":
+                        BütünUrunlerListesiniYazdir();
+                        break;
+                    case "2":
+                        DegerdenYuksekFiyatliUrunleriGetir();
+                        break;
+                    case "3":
+                        StokDurumuFalseOlanlarinListesiniGetir();
+                        break;
+                    case "4":
+                        SecilenUrunleriSil();
+                        break;
+                    case "5":
+                        UrunGir();
+                        break;
+
+                    case "h":
+                        return;
+                    default: break;
+
+
+
+                }
+            } while (true);
+            
+
+        }
+
+        private static void SecilenUrunleriSil()
+        {
+            BütünUrunlerListesiniYazdir();
+            Console.WriteLine("Silmek istediğiniz ürünlerin Id'lerini yazınız: ");
+            
+            string idList = Console.ReadLine();
+            int a=DataManager.SecilenUrunleriSil(idList);
+            Console.WriteLine($"silinen urun adedi {a}");
+            Console.ReadLine();
+        }
+
+        private static void BütünUrunlerListesiniYazdir()
+        {
+            
+            List<Lib.Urun> liste = DataManager.UrunListesiniGetir();
+           
+            UrunListesiYazdir(liste, "bütün ürünler...",true);
+            Console.ReadLine();
+
+           
         }
 
         private static void DegerdenYuksekFiyatliUrunleriGetir()
@@ -42,26 +106,41 @@ namespace KafeYonetim.Sunum.AnaUygulama
             var doubleEsikDeger = double.Parse(Console.ReadLine());
 
             var liste = DataManager.DegerdenYuksekFiyatliUrunleriGetir(doubleEsikDeger);
-
-            Console.Clear();
-
-            //Console.Write("Id".PadLeft(7));
-            Console.Write("Ad".PadRight(25));
-            Console.Write("Fiyat".PadRight(15));
-            Console.Write("Stok".PadRight(7));
+            
+            UrunListesiYazdir(liste, $"{doubleEsikDeger} den yüksek urunler...",true);
 
 
-            foreach (var urun in liste)
-            {
-                Console.WriteLine();
-                //Console.Write($"{urun.ID}".PadLeft(7));
-                Console.Write($"{urun.Ad}".PadRight(25));
-                Console.Write($"{urun.Fiyat}".PadRight(15));
-                Console.Write($"{urun.StoktaVarmi}".PadRight(7));
-            }
 
             Console.ReadLine();
 
+        }
+        private static void StokDurumuFalseOlanlarinListesiniGetir()
+        {
+            List<Urun> liste = DataManager.StokDurumuFalseOlanlarinListesiniGetir();
+            UrunListesiYazdir(liste, "stokda olmayan ürünler", true);
+            Console.ReadLine();
+        }
+        private static void UrunListesiYazdir(List<Urun> liste,string baslik,bool ekranTemizlensinMi)
+        {
+            if (ekranTemizlensinMi)
+            {
+                Console.Clear();
+            }
+            if (!(string.IsNullOrWhiteSpace(baslik)))//baslik bos değilse
+            {
+                Console.WriteLine(baslik);
+            }
+           
+            Console.WriteLine($"{"ID".PadRight(4)} {"Isim".PadRight(19)} {"Fiyat".PadRight(19)} Stok Durumu");
+            Console.WriteLine("".PadRight(60, '='));
+            foreach (var urun in liste)
+            {
+                Console.WriteLine();
+                Console.Write($"{urun.Id}".PadRight(5));
+                Console.Write($"{urun.Ad}".PadRight(20));
+                Console.Write($"{urun.Fiyat}".PadRight(20));
+                Console.Write($"{urun.StoktaVarmi}".PadRight(7));
+            }
         }
 
         private static void UrunGir()

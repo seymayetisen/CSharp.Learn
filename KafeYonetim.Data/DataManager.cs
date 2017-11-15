@@ -11,7 +11,7 @@ namespace KafeYonetim.Data
 {
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=kafeYönetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -79,7 +79,7 @@ namespace KafeYonetim.Data
 
         }
 
-        public static void UrunListesiniYazdir()
+        public static List<Urun> UrunListesiniGetir()
         {
             Console.Clear();
 
@@ -88,23 +88,10 @@ namespace KafeYonetim.Data
 
                 var command = new SqlCommand("SELECT * FROM Urunler", connection);
 
-                using (var result = command.ExecuteReader())
-                {
-                    Console.WriteLine($"{"ID".PadRight(4)} {"Isim".PadRight(19)} {"Fiyat".PadRight(19)} Stok Durumu");
-                    Console.WriteLine("".PadRight(60, '='));
-                    while (result.Read())
-                    {
-                        Console.Write($"{result["ID"].ToString().PadRight(5)}");
-                        Console.Write($"{result["ad"].ToString().PadRight(20)}");
-                        Console.Write($"{result["Fiyat"].ToString().PadRight(20)}");
-                        Console.Write($"{result["StoktaVarMi"]}");
-                        Console.WriteLine();
-                    }
-
-                }
+                return UrunListesiHazirla(command.ExecuteReader());
             }
+           
 
-            Console.ReadLine();
 
         }
 
@@ -115,25 +102,35 @@ namespace KafeYonetim.Data
                 var command = new SqlCommand("SELECT * FROM Urunler WHERE fiyat > @deger", connection);
                 command.Parameters.AddWithValue("@deger", esikDeger);
 
-                var urunListesi = new List<Urun>();
 
-                using (var result = command.ExecuteReader())
-                {
-                    while (result.Read())
-                    {
-
-                        var urun = new Urun(result["ad"].ToString()
-                                            , (double)result["Fiyat"]
-                                            , (bool)result["StoktaVarMi"]);
-
-
-                        urunListesi.Add(urun);
-                    }
-
-                }
-
-                return urunListesi;
+                return UrunListesiHazirla(command.ExecuteReader());
             }
+        }
+        public static List<Urun> StokDurumuFalseOlanlarinListesiniGetir()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT * FROM Urunler WHERE stokdavarmı='false'", connection);
+                
+
+                return UrunListesiHazirla(command.ExecuteReader());
+            }
+        }
+        public static List<Urun> UrunListesiHazirla(SqlDataReader result)
+        {
+            var urunListesi = new List<Urun>();
+
+            using (result)
+            {
+                while (result.Read())
+                {
+                    Urun urun = new Urun((int)result["id"], result["ad"].ToString()
+                            , (double)result["fiyat"]
+                            , (bool)result["stokdavarmı"]);
+                    urunListesi.Add(urun);
+                }
+            }
+            return urunListesi;
         }
 
         public static void KapatilmamimsBaglanti()
@@ -229,25 +226,15 @@ namespace KafeYonetim.Data
         //    Console.ReadLine();
         //}
 
-        public static void SecilenUrunleriSil()
+        public static int SecilenUrunleriSil(string idList)
         {
-            UrunListesiniYazdir();
-
-            Console.WriteLine("Silmek istediğiniz ürünlerin Id'lerini yazınız: ");
-
-            var idList = Console.ReadLine();
-
             using (var connection = CreateConnection())
             {
+                var command = new SqlCommand($"DELETE FROM Urunler WHERE id IN ({idList}) ", connection);
 
-                var command = new SqlCommand($"DELETE FROM Urunler WHERE ID IN ({idList}) ", connection);
-
-                command.ExecuteNonQuery();
-
+               return command.ExecuteNonQuery();
             }
-
-            UrunListesiniYazdir();
-
+            
         }
     }
 }
