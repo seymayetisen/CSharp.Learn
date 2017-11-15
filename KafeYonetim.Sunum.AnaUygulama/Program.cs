@@ -40,6 +40,16 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("stokda olmatan ürünleri getir        3");
                 Console.WriteLine("urunleri sil                         4");
                 Console.WriteLine("urun gir                             5");
+                Console.WriteLine("masa ekle                            6");
+                Console.WriteLine("masa sayısı                          7");
+                Console.WriteLine("garson ekle                          8");
+                Console.WriteLine("asci ekle                            9");
+                Console.WriteLine("calisanlar listesini getir           10");
+
+
+
+
+
                 Console.WriteLine();
                 Console.WriteLine("cıkmak için                          h");
                 //
@@ -63,7 +73,21 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "5":
                         UrunGir();
                         break;
-
+                    case "6":
+                        MasaEkle();
+                        break;
+                    case "7":
+                        masaSayisiniGetir();
+                        break;
+                    case "8":
+                        CalisanEkle("garson");
+                        break;
+                    case "9":
+                        CalisanEkle("garson");
+                        break;
+                    case "10":
+                        CalisanlarListesiniGetir();
+                        break;
                     case "h":
                         return;
                     default: break;
@@ -74,6 +98,91 @@ namespace KafeYonetim.Sunum.AnaUygulama
             } while (true);
             
 
+        }
+
+        private static void CalisanlarListesiniGetir()
+        {
+            List<Calisann> calisanlar = DataManager.CalisanlarListesiniGetir();
+            Console.Clear();
+            Console.WriteLine($"{"Isim".PadRight(14)} {"Gorev".PadRight(19)}");
+            Console.WriteLine("".PadRight(60, '='));
+            foreach (var calisan in calisanlar)
+            {
+                Console.WriteLine();
+                Console.Write($"{calisan.Isim}".PadRight(15));
+                Console.Write($"{calisan.Gorev}".PadRight(20));
+                
+            }
+            Console.ReadLine();
+        }
+
+        private static void CalisanEkle(string Gorev)
+        {
+            Console.Clear();
+            Console.WriteLine("garsonun ismini giriniz : ");
+            string Isim = Console.ReadLine();
+            Console.WriteLine("garsonun işe giris tarihi : ");
+            DateTime IseGirisTarihi = DateTime.Parse(Console.ReadLine());
+            Console.Write("Garson mesaide mi (E/H):");
+            bool MesaideMi = Console.ReadLine().ToUpper() == "E";
+            int KafeId = 1;
+            Console.WriteLine("garson durum (Uygun/Masada/MusaitDegil)");
+            string Durum = Console.ReadLine();
+
+            if (DataManager.CalisanEkle(Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, Gorev))
+            {
+                Console.WriteLine("kayıt eklendi...");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("kayıt eklenemedi...");
+                Console.ReadKey();
+            }
+            
+
+            
+            
+
+
+        }
+
+        private static void masaSayisiniGetir()
+        {
+            Console.Clear();
+            int sayisi=DataManager.masaSayisiniGetir();
+            Console.WriteLine($"kafede toplam {sayisi} tane masa var...");
+            Console.ReadLine();
+        }
+
+        private static void MasaEkle()
+        {
+            try
+            {
+                Console.Clear();
+                Console.WriteLine("masa no giriniz : ");
+                int MasaNo = int.Parse(Console.ReadLine());
+                Console.WriteLine("Masa durumunu giriniz (Bos/Dolu) : ");
+                string MasaDurum = Console.ReadLine();
+                int KafeId = 1;
+                if (DataManager.MasaEkle(MasaNo,KafeId,MasaDurum))
+                {
+                    Console.WriteLine("kayıt eklendi...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("kayıt eklenemedi...");
+                    Console.ReadKey();
+                }
+            }
+            catch (Exception)
+            {
+                
+                Console.WriteLine("aynı masa no bulunmakta lütfen farklı bir deger giriniz...");
+                Console.ReadKey();
+            }
+            
         }
 
         private static void SecilenUrunleriSil()

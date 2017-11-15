@@ -17,6 +17,7 @@ namespace KafeYonetim.Lib
             Siparisler = new List<Siparis>();
         }
 
+        public string Gorev { get; set; }
         public string Isim { get; private set; }
         public DateTime IseGirisTarihi { get; private set; }
         public bool MesaideMi { get; private set; }

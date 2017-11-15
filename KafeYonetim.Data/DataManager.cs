@@ -11,7 +11,7 @@ namespace KafeYonetim.Data
 {
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=kafeYönetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-SON6OA8;Initial Catalog=kafeYönetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -90,9 +90,6 @@ namespace KafeYonetim.Data
 
                 return UrunListesiHazirla(command.ExecuteReader());
             }
-           
-
-
         }
 
         public static List<Urun> DegerdenYuksekFiyatliUrunleriGetir(double esikDeger)
@@ -106,6 +103,85 @@ namespace KafeYonetim.Data
                 return UrunListesiHazirla(command.ExecuteReader());
             }
         }
+
+        public static int masaSayisiniGetir()
+        {
+            using (SqlConnection connection=CreateConnection())
+            {
+                int i = 0;
+                SqlCommand command = new SqlCommand("select * from Masa", connection);
+                using (SqlDataReader result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        i++;
+                    }
+                }
+                return i;
+            }
+
+        }
+
+        public static List<Calisann> CalisanlarListesiniGetir()
+        {
+            using (SqlConnection connection=CreateConnection())
+            {
+                List<Calisann> calisanlar = new List<Calisann>();
+                SqlCommand command = new SqlCommand("select * from Calisan", connection);
+                using (SqlDataReader result=command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        Calisann cal = new Calisann(result["Isim"].ToString(), result["Gorev"].ToString());
+                        calisanlar.Add(cal);
+                    }
+                    
+                }
+
+                return calisanlar;
+            }
+        }
+
+        public static bool CalisanEkle(string Isim, DateTime IseGirisTarihi, bool MesaideMi, int KafeId, string Durum,string Gorev)
+        {
+            using (SqlConnection connection = CreateConnection())
+            {
+                SqlCommand command = new SqlCommand("INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi,KafeId,Durum,Gorev) VALUES (@Isim, @IseGirisTarihi, @MesaideMi,@KafeId,@Durum,@Gorev)", connection);
+                command.Parameters.AddWithValue("@Isim", Isim);
+                command.Parameters.AddWithValue("@IseGirisTarihi", IseGirisTarihi);
+                command.Parameters.AddWithValue("@MesaideMi", MesaideMi);
+                command.Parameters.AddWithValue("@KafeId", KafeId);
+                command.Parameters.AddWithValue("@Durum", Durum);
+                command.Parameters.AddWithValue("@Gorev", Gorev);
+
+                var result = command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public static bool MasaEkle(int masaNo, int kafeId, string masaDurum)
+        {
+            using (SqlConnection connection =CreateConnection())
+            {
+                SqlCommand command = new SqlCommand("INSERT INTO Masa (MasaNo, KafeId, Durum) VALUES (@MasaNo, @KafeId, @Durum)", connection);
+                command.Parameters.AddWithValue("@MasaNo", masaNo);
+                command.Parameters.AddWithValue("@KafeId", kafeId);
+                command.Parameters.AddWithValue("@Durum", masaDurum);
+                var result = command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public static List<Urun> StokDurumuFalseOlanlarinListesiniGetir()
         {
             using (var connection = CreateConnection())
@@ -192,8 +268,8 @@ namespace KafeYonetim.Data
 
                 return false;
             }
-
         }
+        
 
         //public static void UrunGir()
         //{
@@ -236,5 +312,16 @@ namespace KafeYonetim.Data
             }
             
         }
+    }
+    public class Calisann
+    {
+        public Calisann(string isim, string gorev)
+        {
+            Isim = isim;
+            Gorev = gorev;
+
+        }
+        public string Gorev { get; set; }
+        public string Isim { get; private set; }
     }
 }
