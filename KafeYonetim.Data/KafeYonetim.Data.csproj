@@ -43,5 +43,11 @@
     <Compile Include="DataManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kafe.Lib\KafeYonetim.Lib.csproj">
+      <Project>{ef0c8b96-31e9-42f5-8112-ccc782c67033}</Project>
+      <Name>KafeYonetim.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

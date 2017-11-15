@@ -33,9 +33,7 @@ namespace CSharp.Learn.Namsespace
             di.Dizi();
 
             var so = new StringOperations();
-            //so.StringMetodlari();
-            //so.GirilenMetinBosMuKontroluYap();
-            //so.EnUzunKelimeyiBul();
+            so.KelimeSayilariniBul(Console.ReadLine());
         }
     }
 }

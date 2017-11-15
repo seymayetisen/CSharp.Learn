@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KafeYonetim.Lib;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,7 +11,7 @@ namespace KafeYonetim.Data
 {
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=kafeYönetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -78,7 +79,7 @@ namespace KafeYonetim.Data
 
         }
 
-        public static void UrunListesiniYazdir()
+        public static List<Urun> UrunListesiniGetir()
         {
             Console.Clear();
 
@@ -87,52 +88,49 @@ namespace KafeYonetim.Data
 
                 var command = new SqlCommand("SELECT * FROM Urunler", connection);
 
-                using (var result = command.ExecuteReader())
-                {
-                    Console.WriteLine($"{"ID".PadRight(4)} {"Isim".PadRight(19)} {"Fiyat".PadRight(19)} Stok Durumu");
-                    Console.WriteLine("".PadRight(60, '='));
-                    while (result.Read())
-                    {
-                        Console.Write($"{result["ID"].ToString().PadRight(5)}");
-                        Console.Write($"{result["ad"].ToString().PadRight(20)}");
-                        Console.Write($"{result["Fiyat"].ToString().PadRight(20)}");
-                        Console.Write($"{result["StoktaVarMi"]}");
-                        Console.WriteLine();
-                    }
-
-                }
+                return UrunListesiHazirla(command.ExecuteReader());
             }
+           
 
-            Console.ReadLine();
 
         }
 
-        public static void DegerdenYuksekFiyatliUrunleriGetir()
+        public static List<Urun> DegerdenYuksekFiyatliUrunleriGetir(double esikDeger)
         {
             using (var connection = CreateConnection())
             {
-
-                Console.Write("Bir değer giriniz: ");
-                var deger = Console.ReadLine();
-
                 var command = new SqlCommand("SELECT * FROM Urunler WHERE fiyat > @deger", connection);
-                command.Parameters.AddWithValue("@deger", double.Parse(deger));
+                command.Parameters.AddWithValue("@deger", esikDeger);
 
-                using (var result = command.ExecuteReader())
+
+                return UrunListesiHazirla(command.ExecuteReader());
+            }
+        }
+        public static List<Urun> StokDurumuFalseOlanlarinListesiniGetir()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT * FROM Urunler WHERE stokdavarmı='false'", connection);
+                
+
+                return UrunListesiHazirla(command.ExecuteReader());
+            }
+        }
+        public static List<Urun> UrunListesiHazirla(SqlDataReader result)
+        {
+            var urunListesi = new List<Urun>();
+
+            using (result)
+            {
+                while (result.Read())
                 {
-
-                    while (result.Read())
-                    {
-                        Console.Write($"{result["ad"]}");
-                        Console.Write($"{result["Fiyat"]}");
-                        Console.WriteLine();
-                    }
-
+                    Urun urun = new Urun((int)result["id"], result["ad"].ToString()
+                            , (double)result["fiyat"]
+                            , (bool)result["stokdavarmı"]);
+                    urunListesi.Add(urun);
                 }
             }
-
-            Console.ReadLine();
-
+            return urunListesi;
         }
 
         public static void KapatilmamimsBaglanti()
@@ -176,50 +174,67 @@ namespace KafeYonetim.Data
             Console.ReadLine();
         }
 
-        public static string UrunGir(string ad,double fiyat,char eh)
+        public static bool UrunGir(string ad, double fiyat, bool stoktaVarMi)
         {
             using (var connection = CreateConnection())
             {
-                var stok = (eh == 'e') ? true : false;
-
                 var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
                 command.Parameters.AddWithValue("@ad", ad);
                 command.Parameters.AddWithValue("@fiyat", fiyat);
-                command.Parameters.AddWithValue("@stoktaVarMi", stok);
+                command.Parameters.AddWithValue("@stoktaVarMi", stoktaVarMi);
 
                 var result = command.ExecuteNonQuery();
 
                 if (result > 0)
                 {
-                    return "Kayıt eklendi.";
+                    return true;
                 }
-                else
-                {
-                    return "kayıt eklenemedi";
-                }
+
+                return false;
             }
-            
+
         }
 
-        public static void SecilenUrunleriSil()
+        //public static void UrunGir()
+        //{
+        //    using (var connection = CreateConnection())
+        //    {
+
+        //        Console.Write("Ürün Adını giriniz: ");
+        //        var ad = (isWindows)? textBox1.Text : Console.ReadLine();
+
+        //        Console.Write("Ürün fiyatını giriniz: ");
+        //        var fiyat = double.Parse(Console.ReadLine());
+
+        //        Console.Write("Ürün stokta var mı? (e/h): ");
+        //        var stok = (Console.ReadLine() == "e") ? true : false;
+
+        //        var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
+        //        command.Parameters.AddWithValue("@ad", ad);
+        //        command.Parameters.AddWithValue("@fiyat", fiyat);
+        //        command.Parameters.AddWithValue("@stoktaVarMi", stok);
+
+        //        var result = command.ExecuteNonQuery();
+
+        //        if (result > 0)
+        //        {
+        //            Console.WriteLine("Kayıt eklendi.");
+        //        }
+
+        //    }
+
+        //    Console.ReadLine();
+        //}
+
+        public static int SecilenUrunleriSil(string idList)
         {
-            UrunListesiniYazdir();
-
-            Console.WriteLine("Silmek istediğiniz ürünlerin Id'lerini yazınız: ");
-
-            var idList = Console.ReadLine();
-
             using (var connection = CreateConnection())
             {
+                var command = new SqlCommand($"DELETE FROM Urunler WHERE id IN ({idList}) ", connection);
 
-                var command = new SqlCommand($"DELETE FROM Urunler WHERE ID IN ({idList}) ", connection);
-
-                command.ExecuteNonQuery();
-
+               return command.ExecuteNonQuery();
             }
-
-            UrunListesiniYazdir();
-
+            
         }
     }
 }
