@@ -39,15 +39,19 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("1. Ürün Listesini Getir");
                 Console.WriteLine("2. Eşik Değerden Yüksek Fiyatlı Ürünlerin Listesini Getir");
                 Console.WriteLine("3. Ürün Ekle");
+                Console.WriteLine("4. Stokta olmayan ürünleri listele");
+                Console.WriteLine("5. Ürün Sil");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
 
                 switch (secim)
                 {
-                    case "1": ButunUrunlerListesiniYazdir(); break;
+                    case "1": ButunUrunlerListesiniYazdir(); Console.ReadLine(); break;
                     case "2": DegerdenYuksekFiyatliUrunleriGetir(); break;
                     case "3": UrunGir(); break;
+                    case "4": StoktaOlmayanUrunleriListele(); break;
+                    case "5": UrunSil(); break;
                     case "h": return;
                     default:
                         break;
@@ -55,6 +59,29 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
             } while (true);
 
+        }
+
+        private static void UrunSil()
+        {
+            ButunUrunlerListesiniYazdir();
+            Console.WriteLine("\n\nSilmek istediğiniz ürünlern ID'lerini yazınız: ");
+
+            var idLer = Console.ReadLine();
+
+            int result = DataManager.SecilenUrunleriSil(idLer);
+
+            ButunUrunlerListesiniYazdir();
+
+            Console.WriteLine($"\n\nToplam {result} adet ürün silindi...");
+
+            Console.ReadLine();
+        }
+
+        private static void StoktaOlmayanUrunleriListele()
+        {
+            var urunler = DataManager.StoktaOlmayanUrunlerinListesiniGetir();
+            UrunListesiYazdir(urunler, "Stokta Olmayan Ürünler", true);
+            Console.ReadLine();
         }
 
         private static void UrunListesiYazdir(List<Urun> urunler, string baslik, bool ekranTemizlensinMi)
@@ -87,7 +114,6 @@ namespace KafeYonetim.Sunum.AnaUygulama
         {
             var urunler = DataManager.UrunListesiniGetir();
             UrunListesiYazdir(urunler, "Tüm Ürünler", true);
-            Console.ReadLine();
         }
 
         private static void DegerdenYuksekFiyatliUrunleriGetir()
@@ -116,7 +142,9 @@ namespace KafeYonetim.Sunum.AnaUygulama
             Console.Write("Stokta Var mı (E/H):");
             bool stokDurumu = Console.ReadLine().ToUpper() == "E";
 
-            if (DataManager.UrunGir(urunAdi, fiyat, stokDurumu))
+            var yeniUrun = new Urun(59, urunAdi, fiyat, stokDurumu);
+
+            if (DataManager.UrunGir(yeniUrun))
             {
                 Console.WriteLine("Ürün başarıyla eklendi.");
             }
@@ -124,6 +152,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
             {
                 Console.WriteLine("Ürün eklenirken bir hata oluştu...");
             }
+
 
             Console.ReadLine();
         }

@@ -79,20 +79,18 @@ namespace KafeYonetim.Data
             using (var connection = CreateConnection())
             {
                 var command = new SqlCommand("SELECT * FROM Urunler", connection);
+                return UrunListesiHazirla(command.ExecuteReader());
+            }
 
-                using (var result = command.ExecuteReader())
-                {
-                    var urunler = new List<Urun>();
+        }
 
-                    while (result.Read())
-                    {
-                        var urun = new Urun((int)result["Id"],result["ad"].ToString(), (double)result["fiyat"], (bool)result["stoktaVarMi"]);
+        public static List<Urun> StoktaOlmayanUrunlerinListesiniGetir()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT * FROM Urunler WHERE StoktaVarMi = 'false'", connection);
 
-                        urunler.Add(urun);
-                    }
-
-                    return urunler;
-                }
+                return UrunListesiHazirla(command.ExecuteReader());
             }
 
         }
@@ -104,27 +102,31 @@ namespace KafeYonetim.Data
                 var command = new SqlCommand("SELECT * FROM Urunler WHERE fiyat > @deger", connection);
                 command.Parameters.AddWithValue("@deger", esikDeger);
 
-                var urunListesi = new List<Urun>();
+                return UrunListesiHazirla(command.ExecuteReader());
+            }
+        }
 
-                using (var result = command.ExecuteReader())
+        private static List<Urun> UrunListesiHazirla(SqlDataReader reader)
+        {
+            var urunListesi = new List<Urun>();
+
+            using (reader)
+            {
+                while (reader.Read())
                 {
-                    while (result.Read())
-                    {
 
-                        var urun = new Urun((int)result["Id"],result["ad"].ToString()
-                                            , (double)result["Fiyat"]
-                                            , (bool)result["StoktaVarMi"]);
+                    var urun = new Urun((int)reader["Id"], reader["ad"].ToString()
+                                        , (double)reader["Fiyat"]
+                                        , (bool)reader["StoktaVarMi"]);
 
 
-                        urunListesi.Add(urun);
-                    }
-
+                    urunListesi.Add(urun);
                 }
 
-                return urunListesi;
-
-
             }
+
+            return urunListesi;
+
         }
 
         public static void KapatilmamimsBaglanti()
@@ -168,14 +170,14 @@ namespace KafeYonetim.Data
             Console.ReadLine();
         }
 
-        public static bool UrunGir(string ad, double fiyat, bool stoktaVarMi)
+        public static bool UrunGir(Urun urun)
         {
             using (var connection = CreateConnection())
             {
                 var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
-                command.Parameters.AddWithValue("@ad", ad);
-                command.Parameters.AddWithValue("@fiyat", fiyat);
-                command.Parameters.AddWithValue("@stoktaVarMi", stoktaVarMi);
+                command.Parameters.AddWithValue("@ad", urun.Ad);
+                command.Parameters.AddWithValue("@fiyat", urun.Fiyat);
+                command.Parameters.AddWithValue("@stoktaVarMi", urun.StoktaVarmi);
 
                 var result = command.ExecuteNonQuery();
 
@@ -220,25 +222,14 @@ namespace KafeYonetim.Data
         //    Console.ReadLine();
         //}
 
-        public static void SecilenUrunleriSil()
+        public static int SecilenUrunleriSil(string idList)
         {
-            //UrunListesiniYazdir();
-
-            Console.WriteLine("Silmek istediğiniz ürünlerin Id'lerini yazınız: ");
-
-            var idList = Console.ReadLine();
-
             using (var connection = CreateConnection())
             {
-
                 var command = new SqlCommand($"DELETE FROM Urunler WHERE ID IN ({idList}) ", connection);
 
-                command.ExecuteNonQuery();
-
+                return command.ExecuteNonQuery();
             }
-
-           // UrunListesiniYazdir();
-
         }
     }
 }

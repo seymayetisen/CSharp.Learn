@@ -10,7 +10,7 @@
             StoktaVarmi = stoktaVarMi;
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
         public string Ad { get; private set; }
         public double Fiyat { get; private set; }
         public bool StoktaVarmi { get; set; }
