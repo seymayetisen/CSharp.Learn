@@ -1,11 +1,7 @@
 ﻿using KafeYonetim.Lib;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KafeYonetim.Data
 {
@@ -23,7 +19,6 @@ namespace KafeYonetim.Data
 
         public static void KafeBilgisiniYazdir()
         {
-
             using (var connection = CreateConnection())
             {
                 var command = new SqlCommand("SELECT TOP 1 * FROM KAfe ", connection);
@@ -79,32 +74,26 @@ namespace KafeYonetim.Data
 
         }
 
-        public static void UrunListesiniYazdir()
+        public static List<Urun> UrunListesiniGetir()
         {
-            Console.Clear();
-
             using (var connection = CreateConnection())
             {
-
                 var command = new SqlCommand("SELECT * FROM Urunler", connection);
 
                 using (var result = command.ExecuteReader())
                 {
-                    Console.WriteLine($"{"ID".PadRight(4)} {"Isim".PadRight(19)} {"Fiyat".PadRight(19)} Stok Durumu");
-                    Console.WriteLine("".PadRight(60, '='));
+                    var urunler = new List<Urun>();
+
                     while (result.Read())
                     {
-                        Console.Write($"{result["ID"].ToString().PadRight(5)}");
-                        Console.Write($"{result["ad"].ToString().PadRight(20)}");
-                        Console.Write($"{result["Fiyat"].ToString().PadRight(20)}");
-                        Console.Write($"{result["StoktaVarMi"]}");
-                        Console.WriteLine();
+                        var urun = new Urun((int)result["Id"],result["ad"].ToString(), (double)result["fiyat"], (bool)result["stoktaVarMi"]);
+
+                        urunler.Add(urun);
                     }
 
+                    return urunler;
                 }
             }
-
-            Console.ReadLine();
 
         }
 
@@ -122,7 +111,7 @@ namespace KafeYonetim.Data
                     while (result.Read())
                     {
 
-                        var urun = new Urun(result["ad"].ToString()
+                        var urun = new Urun((int)result["Id"],result["ad"].ToString()
                                             , (double)result["Fiyat"]
                                             , (bool)result["StoktaVarMi"]);
 
@@ -133,6 +122,8 @@ namespace KafeYonetim.Data
                 }
 
                 return urunListesi;
+
+
             }
         }
 
@@ -231,7 +222,7 @@ namespace KafeYonetim.Data
 
         public static void SecilenUrunleriSil()
         {
-            UrunListesiniYazdir();
+            //UrunListesiniYazdir();
 
             Console.WriteLine("Silmek istediğiniz ürünlerin Id'lerini yazınız: ");
 
@@ -246,7 +237,7 @@ namespace KafeYonetim.Data
 
             }
 
-            UrunListesiniYazdir();
+           // UrunListesiniYazdir();
 
         }
     }
