@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KafeYonetim.Lib;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -107,32 +108,32 @@ namespace KafeYonetim.Data
 
         }
 
-        public static void DegerdenYuksekFiyatliUrunleriGetir()
+        public static List<Urun> DegerdenYuksekFiyatliUrunleriGetir(double esikDeger)
         {
             using (var connection = CreateConnection())
             {
-
-                Console.Write("Bir değer giriniz: ");
-                var deger = Console.ReadLine();
-
                 var command = new SqlCommand("SELECT * FROM Urunler WHERE fiyat > @deger", connection);
-                command.Parameters.AddWithValue("@deger", double.Parse(deger));
+                command.Parameters.AddWithValue("@deger", esikDeger);
+
+                var urunListesi = new List<Urun>();
 
                 using (var result = command.ExecuteReader())
                 {
-
                     while (result.Read())
                     {
-                        Console.Write($"{result["ad"]}");
-                        Console.Write($"{result["Fiyat"]}");
-                        Console.WriteLine();
+
+                        var urun = new Urun(result["ad"].ToString()
+                                            , (double)result["Fiyat"]
+                                            , (bool)result["StoktaVarMi"]);
+
+
+                        urunListesi.Add(urun);
                     }
 
                 }
+
+                return urunListesi;
             }
-
-            Console.ReadLine();
-
         }
 
         public static void KapatilmamimsBaglanti()
@@ -176,36 +177,57 @@ namespace KafeYonetim.Data
             Console.ReadLine();
         }
 
-        public static void UrunGir()
+        public static bool UrunGir(string ad, double fiyat, bool stoktaVarMi)
         {
             using (var connection = CreateConnection())
             {
-
-                Console.Write("Ürün Adını giriniz: ");
-                var ad = Console.ReadLine();
-
-                Console.Write("Ürün fiyatını giriniz: ");
-                var fiyat = double.Parse(Console.ReadLine());
-
-                Console.Write("Ürün stokta var mı? (e/h): ");
-                var stok = (Console.ReadLine() == "e") ? true : false;
-
                 var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
                 command.Parameters.AddWithValue("@ad", ad);
                 command.Parameters.AddWithValue("@fiyat", fiyat);
-                command.Parameters.AddWithValue("@stoktaVarMi", stok);
+                command.Parameters.AddWithValue("@stoktaVarMi", stoktaVarMi);
 
                 var result = command.ExecuteNonQuery();
 
                 if (result > 0)
                 {
-                    Console.WriteLine("Kayıt eklendi.");
+                    return true;
                 }
 
+                return false;
             }
 
-            Console.ReadLine();
         }
+
+        //public static void UrunGir()
+        //{
+        //    using (var connection = CreateConnection())
+        //    {
+
+        //        Console.Write("Ürün Adını giriniz: ");
+        //        var ad = (isWindows)? textBox1.Text : Console.ReadLine();
+
+        //        Console.Write("Ürün fiyatını giriniz: ");
+        //        var fiyat = double.Parse(Console.ReadLine());
+
+        //        Console.Write("Ürün stokta var mı? (e/h): ");
+        //        var stok = (Console.ReadLine() == "e") ? true : false;
+
+        //        var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
+        //        command.Parameters.AddWithValue("@ad", ad);
+        //        command.Parameters.AddWithValue("@fiyat", fiyat);
+        //        command.Parameters.AddWithValue("@stoktaVarMi", stok);
+
+        //        var result = command.ExecuteNonQuery();
+
+        //        if (result > 0)
+        //        {
+        //            Console.WriteLine("Kayıt eklendi.");
+        //        }
+
+        //    }
+
+        //    Console.ReadLine();
+        //}
 
         public static void SecilenUrunleriSil()
         {

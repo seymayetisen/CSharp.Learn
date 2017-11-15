@@ -15,9 +15,9 @@ namespace KafeYonetim.Lib
         public Asci SiparisiHazirlayanAsci { get; set; }
         public Masa Masa { get; set; }
         public string Not { get; set; }
-        public float ToplamFiyat {
+        public double ToplamFiyat {
             get {
-                float toplam = 0f;
+                double toplam = 0f;
 
                 foreach (var kalem in Kalemler)
                 {
