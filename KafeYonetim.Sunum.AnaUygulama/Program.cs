@@ -43,6 +43,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("5. Ürün Sil");
                 Console.WriteLine("6. Masa Ekle");
                 Console.WriteLine("7. Masa Sayısı");
+                Console.WriteLine("8. Garson Ekle");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -56,6 +57,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "5": UrunSil(); break;
                     case "6": MasaEkle(); break;
                     case "7": MasaSayisi(); break;
+                    case "8": GarsonEkle(); break;
                     case "h": return;
                     default:
                         break;
@@ -65,13 +67,28 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
         }
 
-        private static void MasaSayisi()
+        private static void GarsonEkle()
         {
             Console.Clear();
 
-            Tuple<int, int> result = DataManager.MasaSayisi();
-            Console.WriteLine($"Toplam {result.Item1} adet masa var ve kisi kapasitesi {result.Item2} 'dir.");
-            
+            Console.Write("Isim: ");
+            string isim = Console.ReadLine();
+
+            var garson = new Garson(isim, DateTime.Now, DataManager.AktifKafeyiGetir());
+
+            DataManager.GarsonEkle(garson);
+
+            Console.ReadLine();
+
+        }
+
+            private static void MasaSayisi()
+        {
+            Console.Clear();
+
+            var result = DataManager.MasaSayisi();
+
+            Console.WriteLine($"{result.Item1} adet masada {result.Item2} kişilik kapasiteniz var.");
             Console.ReadLine();
         }
 
@@ -87,7 +104,6 @@ namespace KafeYonetim.Sunum.AnaUygulama
             ButunUrunlerListesiniYazdir();
 
             Console.WriteLine($"\n\nToplam {result} adet ürün silindi...");
-           
 
             Console.ReadLine();
         }
@@ -168,11 +184,8 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("Ürün eklenirken bir hata oluştu...");
             }
 
-
             Console.ReadLine();
         }
-
-        
 
         public static void MasaEkle()
         {
@@ -182,14 +195,13 @@ namespace KafeYonetim.Sunum.AnaUygulama
             Console.Write("Masa No: ");
             string masaNo = Console.ReadLine();
             var yeniMasa = new Masa(masaNo, DataManager.AktifKafeyiGetir());
-
+            yeniMasa.Durum = MasaDurum.Bos;
             Console.Write("Kişi Sayısı: ");
             yeniMasa.KisiSayisi = byte.Parse( Console.ReadLine());
 
             int id =DataManager.MasaEkle(yeniMasa);
-
+            
             Console.WriteLine($"{id} ID'li masa eklendi");
-
 
             Console.ReadLine();
         }
