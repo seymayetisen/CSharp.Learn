@@ -41,6 +41,8 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("3. Ürün Ekle");
                 Console.WriteLine("4. Stokta olmayan ürünleri listele");
                 Console.WriteLine("5. Ürün Sil");
+                Console.WriteLine("6. Masa Ekle");
+                Console.WriteLine("7. Masa Sayısı");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -52,6 +54,8 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "3": UrunGir(); break;
                     case "4": StoktaOlmayanUrunleriListele(); break;
                     case "5": UrunSil(); break;
+                    case "6": MasaEkle(); break;
+                    case "7": MasaSayisi(); break;
                     case "h": return;
                     default:
                         break;
@@ -59,6 +63,14 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
             } while (true);
 
+        }
+
+        private static void MasaSayisi()
+        {
+            Console.Clear();
+
+            Console.WriteLine($"Toplam {DataManager.MasaSayisi()} adet masa var.");
+            Console.ReadLine();
         }
 
         private static void UrunSil()
@@ -153,6 +165,27 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("Ürün eklenirken bir hata oluştu...");
             }
 
+
+            Console.ReadLine();
+        }
+
+        
+
+        public static void MasaEkle()
+        {
+            Console.Clear();
+            Console.WriteLine("MASA EKLEME");
+
+            Console.Write("Masa No: ");
+            string masaNo = Console.ReadLine();
+            var yeniMasa = new Masa(masaNo, new Kafe(1, "sdafsdf", "sdfsd", "sdfsd"));
+
+            Console.Write("Kişi Sayısı: ");
+            yeniMasa.KisiSayisi = byte.Parse( Console.ReadLine());
+
+            int id =DataManager.MasaEkle(yeniMasa);
+
+            Console.WriteLine($"{id} ID'li masa eklendi");
 
             Console.ReadLine();
         }
