@@ -36,14 +36,18 @@ namespace KafeYonetim.Sunum.AnaUygulama
             {
                 Console.Clear();
 
-                Console.WriteLine("1. Ürün Listesini Getir");
-                Console.WriteLine("2. Eşik Değerden Yüksek Fiyatlı Ürünlerin Listesini Getir");
-                Console.WriteLine("3. Ürün Ekle");
-                Console.WriteLine("4. Stokta olmayan ürünleri listele");
-                Console.WriteLine("5. Ürün Sil");
-                Console.WriteLine("6. Masa Ekle");
-                Console.WriteLine("7. Masa Sayısı");
-                Console.WriteLine("8. Garson Ekle");
+                Console.WriteLine("1.  Ürün Listesini Getir");
+                Console.WriteLine("2.  Eşik Değerden Yüksek Fiyatlı Ürünlerin Listesini Getir");
+                Console.WriteLine("3.  Ürün Ekle");
+                Console.WriteLine("4.  Stokta olmayan ürünleri listele");
+                Console.WriteLine("5.  Ürün Sil");
+                Console.WriteLine("6.  Masa Ekle");
+                Console.WriteLine("7.  Masa Sayısı");
+                Console.WriteLine("8.  Garson Ekle");
+                Console.WriteLine("9.  asci Ekle");
+                Console.WriteLine("10. calisanlari listele");
+
+
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -58,6 +62,10 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "6": MasaEkle(); break;
                     case "7": MasaSayisi(); break;
                     case "8": GarsonEkle(); break;
+                    case "9": AsciEkle(); break;
+                    case "10": CalisanlariListele(); break;
+
+
                     case "h": return;
                     default:
                         break;
@@ -67,6 +75,34 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
         }
 
+        private static void CalisanlariListele()
+        {
+            Console.Clear();
+            List<Calisan> calisanlar= DataManager.CalisanlariListele();
+            Console.WriteLine($"{"Isim".PadRight(14)} {"Görev Adi".PadRight(19)}");
+            Console.WriteLine("".PadRight(60, '='));
+            foreach (var calisan in calisanlar)
+            {
+                Console.Write(calisan.Isim.PadRight(15));
+                Console.WriteLine(calisan.GorevAdi.PadRight(20));
+                Console.WriteLine();
+                Console.ReadLine();
+            }
+        }
+
+        private static void AsciEkle()
+        {
+            Console.Clear();
+            Console.Write("Isim: ");
+            string isim = Console.ReadLine();
+
+            var asci = new Asci(isim, DateTime.Now, DataManager.AktifKafeyiGetir(),"asci");
+
+            DataManager.AsciEkle(asci);
+
+            Console.ReadLine();
+        }
+
         private static void GarsonEkle()
         {
             Console.Clear();
@@ -74,7 +110,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
             Console.Write("Isim: ");
             string isim = Console.ReadLine();
 
-            var garson = new Garson(isim, DateTime.Now, DataManager.AktifKafeyiGetir());
+            var garson = new Garson(isim, DateTime.Now, DataManager.AktifKafeyiGetir(),"garson");
 
             DataManager.GarsonEkle(garson);
 
