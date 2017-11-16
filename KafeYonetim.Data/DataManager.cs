@@ -7,7 +7,7 @@ namespace KafeYonetim.Data
 {
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=kafeYönetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -17,7 +17,7 @@ namespace KafeYonetim.Data
             return connection;
         }
 
-        public static void KafeBilgisiniYazdir()
+        public static Kafe AktifKafeyiGetir()
         {
             using (var connection = CreateConnection())
             {
@@ -26,8 +26,9 @@ namespace KafeYonetim.Data
                 using (var result = command.ExecuteReader())
                 {
                     result.Read();
-                    Console.WriteLine($"Kafe Adı: {result["Ad"]}");
-                    Console.WriteLine($"Kafe Durumu: {result["Durum"]}");
+                    Kafe kafe = new Kafe((int)result["id"],result["Ad"].ToString(),result["AcilisSaati"].ToString(),result["KapanisSaati"].ToString());
+                    kafe.Durum = (KafeDurum)result["Durum"];
+                    return kafe;
                 }
             }
 
@@ -74,15 +75,20 @@ namespace KafeYonetim.Data
 
         }
 
-        public static int MasaSayisi()
+        public static Tuple<int,int> MasaSayisi()
         {
             using (var connection = CreateConnection())
             {
-                var command = new SqlCommand("SELECT COUNT(*) FROM Masa", connection);
+                var command = new SqlCommand("SELECT COUNT(*) as sayi,sum(kisisayisi) as kisi FROM Masa", connection);
 
-                return Convert.ToInt32(command.ExecuteScalar());
+                SqlDataReader reader = command.ExecuteReader();
+                reader.Read();
+
+                return new Tuple<int,int>((int)reader["sayi"],(int)reader["kisi"]);
             }
         }
+
+       
 
         public static List<Urun> UrunListesiniGetir()
         {

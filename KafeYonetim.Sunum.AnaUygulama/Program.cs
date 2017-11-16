@@ -69,7 +69,9 @@ namespace KafeYonetim.Sunum.AnaUygulama
         {
             Console.Clear();
 
-            Console.WriteLine($"Toplam {DataManager.MasaSayisi()} adet masa var.");
+            Tuple<int, int> result = DataManager.MasaSayisi();
+            Console.WriteLine($"Toplam {result.Item1} adet masa var ve kisi kapasitesi {result.Item2} 'dir.");
+            
             Console.ReadLine();
         }
 
@@ -85,6 +87,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
             ButunUrunlerListesiniYazdir();
 
             Console.WriteLine($"\n\nToplam {result} adet ürün silindi...");
+           
 
             Console.ReadLine();
         }
@@ -178,7 +181,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
             Console.Write("Masa No: ");
             string masaNo = Console.ReadLine();
-            var yeniMasa = new Masa(masaNo, new Kafe(1, "sdafsdf", "sdfsd", "sdfsd"));
+            var yeniMasa = new Masa(masaNo, DataManager.AktifKafeyiGetir());
 
             Console.Write("Kişi Sayısı: ");
             yeniMasa.KisiSayisi = byte.Parse( Console.ReadLine());
@@ -186,6 +189,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
             int id =DataManager.MasaEkle(yeniMasa);
 
             Console.WriteLine($"{id} ID'li masa eklendi");
+
 
             Console.ReadLine();
         }

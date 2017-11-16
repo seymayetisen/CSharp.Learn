@@ -105,7 +105,7 @@ namespace KafeYonetim.Lib
         public string Ad { get; private set; }
         public string AcilisSaati { get; private set; }
         public string KapanisSaati { get; private set; }
-        public KafeDurum Durum { get; private set; }
+        public KafeDurum Durum { get;  set; }
         public List<Calisan> Calisanlar { get; set; }
         //public List<Garson> Garsonlar { get; set; }
         //public List<Asci> Ascilar { get; set; }
