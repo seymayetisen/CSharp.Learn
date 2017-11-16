@@ -49,6 +49,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kafe.Lib\KafeYonetim.Lib.csproj">
+      <Project>{ef0c8b96-31e9-42f5-8112-ccc782c67033}</Project>
+      <Name>KafeYonetim.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KafeYonetim.Data\KafeYonetim.Data.csproj">
       <Project>{3bbf4b8d-8a14-49fb-923b-fb532ccf3f1a}</Project>
       <Name>KafeYonetim.Data</Name>

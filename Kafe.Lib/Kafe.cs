@@ -10,6 +10,11 @@ namespace KafeYonetim.Lib
     {
         //Constructor - İnşa edici metod / Yapılandırıcı Metod
 
+        public Kafe(int id, string ad, string acilisSaati, string kapanisSaati) : this(ad, acilisSaati, kapanisSaati)
+        {
+            Id = id;
+        }
+
         public Kafe(string ad, string acilisSaati, string kapanisSaati)
         {
             Ad = ad;
@@ -96,10 +101,11 @@ namespace KafeYonetim.Lib
         //    return null;
         //}
 
+        public int Id { get; set; }
         public string Ad { get; private set; }
         public string AcilisSaati { get; private set; }
         public string KapanisSaati { get; private set; }
-        public KafeDurum Durum { get; private set; }
+        public KafeDurum Durum { get;  set; }
         public List<Calisan> Calisanlar { get; set; }
         //public List<Garson> Garsonlar { get; set; }
         //public List<Asci> Ascilar { get; set; }
@@ -121,6 +127,6 @@ namespace KafeYonetim.Lib
             Durum = KafeDurum.Kapali;
         }
 
-        
+
     }
 }

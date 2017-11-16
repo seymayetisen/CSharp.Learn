@@ -1,16 +1,13 @@
-﻿using System;
+﻿using KafeYonetim.Lib;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KafeYonetim.Data
 {
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=kafeYönetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -20,9 +17,8 @@ namespace KafeYonetim.Data
             return connection;
         }
 
-        public static void KafeBilgisiniYazdir()
+        public static Kafe AktifKafeyiGetir()
         {
-
             using (var connection = CreateConnection())
             {
                 var command = new SqlCommand("SELECT TOP 1 * FROM KAfe ", connection);
@@ -30,8 +26,9 @@ namespace KafeYonetim.Data
                 using (var result = command.ExecuteReader())
                 {
                     result.Read();
-                    Console.WriteLine($"Kafe Adı: {result["Ad"]}");
-                    Console.WriteLine($"Kafe Durumu: {result["Durum"]}");
+                    Kafe kafe = new Kafe((int)result["id"],result["Ad"].ToString(),result["AcilisSaati"].ToString(),result["KapanisSaati"].ToString());
+                    kafe.Durum = (KafeDurum)result["Durum"];
+                    return kafe;
                 }
             }
 
@@ -78,60 +75,73 @@ namespace KafeYonetim.Data
 
         }
 
-        public static void UrunListesiniYazdir()
+        public static Tuple<int,int> MasaSayisi()
         {
-            Console.Clear();
-
             using (var connection = CreateConnection())
             {
+                var command = new SqlCommand("SELECT COUNT(*) as sayi,sum(kisisayisi) as kisi FROM Masa", connection);
 
-                var command = new SqlCommand("SELECT * FROM Urunler", connection);
+                SqlDataReader reader = command.ExecuteReader();
+                reader.Read();
 
-                using (var result = command.ExecuteReader())
-                {
-                    Console.WriteLine($"{"ID".PadRight(4)} {"Isim".PadRight(19)} {"Fiyat".PadRight(19)} Stok Durumu");
-                    Console.WriteLine("".PadRight(60, '='));
-                    while (result.Read())
-                    {
-                        Console.Write($"{result["ID"].ToString().PadRight(5)}");
-                        Console.Write($"{result["ad"].ToString().PadRight(20)}");
-                        Console.Write($"{result["Fiyat"].ToString().PadRight(20)}");
-                        Console.Write($"{result["StoktaVarMi"]}");
-                        Console.WriteLine();
-                    }
-
-                }
+                return new Tuple<int,int>((int)reader["sayi"],(int)reader["kisi"]);
             }
+        }
 
-            Console.ReadLine();
+       
+
+        public static List<Urun> UrunListesiniGetir()
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT * FROM Urunler", connection);
+                return UrunListesiHazirla(command.ExecuteReader());
+            }
 
         }
 
-        public static void DegerdenYuksekFiyatliUrunleriGetir()
+        public static List<Urun> StoktaOlmayanUrunlerinListesiniGetir()
         {
             using (var connection = CreateConnection())
             {
+                var command = new SqlCommand("SELECT * FROM Urunler WHERE StoktaVarMi = 'false'", connection);
 
-                Console.Write("Bir değer giriniz: ");
-                var deger = Console.ReadLine();
-
-                var command = new SqlCommand("SELECT * FROM Urunler WHERE fiyat > @deger", connection);
-                command.Parameters.AddWithValue("@deger", double.Parse(deger));
-
-                using (var result = command.ExecuteReader())
-                {
-
-                    while (result.Read())
-                    {
-                        Console.Write($"{result["ad"]}");
-                        Console.Write($"{result["Fiyat"]}");
-                        Console.WriteLine();
-                    }
-
-                }
+                return UrunListesiHazirla(command.ExecuteReader());
             }
 
-            Console.ReadLine();
+        }
+
+        public static List<Urun> DegerdenYuksekFiyatliUrunleriGetir(double esikDeger)
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("SELECT * FROM Urunler WHERE fiyat > @deger", connection);
+                command.Parameters.AddWithValue("@deger", esikDeger);
+
+                return UrunListesiHazirla(command.ExecuteReader());
+            }
+        }
+
+        private static List<Urun> UrunListesiHazirla(SqlDataReader reader)
+        {
+            var urunListesi = new List<Urun>();
+
+            using (reader)
+            {
+                while (reader.Read())
+                {
+
+                    var urun = new Urun((int)reader["Id"], reader["ad"].ToString()
+                                        , (double)reader["Fiyat"]
+                                        , (bool)reader["StoktaVarMi"]);
+
+
+                    urunListesi.Add(urun);
+                }
+
+            }
+
+            return urunListesi;
 
         }
 
@@ -176,50 +186,114 @@ namespace KafeYonetim.Data
             Console.ReadLine();
         }
 
-        public static string UrunGir(string ad,double fiyat,char eh)
+        public static bool UrunGir(string ad, double fiyat, bool stokDurum)
         {
             using (var connection = CreateConnection())
             {
-                var stok = (eh == 'e') ? true : false;
-
                 var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
                 command.Parameters.AddWithValue("@ad", ad);
                 command.Parameters.AddWithValue("@fiyat", fiyat);
-                command.Parameters.AddWithValue("@stoktaVarMi", stok);
+                command.Parameters.AddWithValue("@stoktaVarMi", stokDurum);
 
                 var result = command.ExecuteNonQuery();
 
                 if (result > 0)
                 {
-                    return "Kayıt eklendi.";
+                    return true;
                 }
-                else
-                {
-                    return "kayıt eklenemedi";
-                }
+
+                return false;
             }
-            
+
         }
 
-        public static void SecilenUrunleriSil()
+        public static bool UrunGir(Urun urun)
         {
-            UrunListesiniYazdir();
-
-            Console.WriteLine("Silmek istediğiniz ürünlerin Id'lerini yazınız: ");
-
-            var idList = Console.ReadLine();
-
             using (var connection = CreateConnection())
             {
+                var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
+                command.Parameters.AddWithValue("@ad", urun.Ad);
+                command.Parameters.AddWithValue("@fiyat", urun.Fiyat);
+                command.Parameters.AddWithValue("@stoktaVarMi", urun.StoktaVarmi);
 
-                var command = new SqlCommand($"DELETE FROM Urunler WHERE ID IN ({idList}) ", connection);
+                var result = command.ExecuteNonQuery();
 
-                command.ExecuteNonQuery();
+                if (result > 0)
+                {
+                    return true;
+                }
 
+                return false;
             }
 
-            UrunListesiniYazdir();
+        }
 
+        //public static void UrunGir()
+        //{
+        //    using (var connection = CreateConnection())
+        //    {
+
+        //        Console.Write("Ürün Adını giriniz: ");
+        //        var ad = (isWindows)? textBox1.Text : Console.ReadLine();
+
+        //        Console.Write("Ürün fiyatını giriniz: ");
+        //        var fiyat = double.Parse(Console.ReadLine());
+
+        //        Console.Write("Ürün stokta var mı? (e/h): ");
+        //        var stok = (Console.ReadLine() == "e") ? true : false;
+
+        //        var command = new SqlCommand("INSERT INTO Urunler (ad, fiyat, stoktavarmi) VALUES (@ad, @fiyat, @stoktaVarMi)", connection);
+        //        command.Parameters.AddWithValue("@ad", ad);
+        //        command.Parameters.AddWithValue("@fiyat", fiyat);
+        //        command.Parameters.AddWithValue("@stoktaVarMi", stok);
+
+        //        var result = command.ExecuteNonQuery();
+
+        //        if (result > 0)
+        //        {
+        //            Console.WriteLine("Kayıt eklendi.");
+        //        }
+
+        //    }
+
+        //    Console.ReadLine();
+        //}
+
+        public static int SecilenUrunleriSil(string idList)
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand($"DELETE FROM Urunler WHERE ID IN ({idList}) ", connection);
+
+                return command.ExecuteNonQuery();
+            }
+        }
+
+        //public static int MasaEkle(string masaNo, int kafeId)
+        //{
+        //    return MasaEkle(masaNo, kafeId, DateTime.Now);
+        //}
+
+        //public static int MasaEkle(string masaNo, int kafeId, DateTime eklenmeTarihi)
+        //{
+        //    return 0;
+        //}
+
+        public static int MasaEkle(Masa masa)
+        {
+            using (var connection = CreateConnection())
+            {
+                var command = new SqlCommand("INSERT INTO Masa (MasaNo, KafeId, Durum, KisiSayisi) VALUES (@masaNo, @kafeId, @durum, @kisiSayisi);SELECT scope_identity()", connection);
+
+                command.Parameters.AddWithValue("@masaNo", masa.MasaNo);
+                command.Parameters.AddWithValue("@kafeId", masa.Kafe.Id);
+                command.Parameters.AddWithValue("@durum", masa.Durum);
+                command.Parameters.AddWithValue("@kisiSayisi", masa.KisiSayisi);
+
+                int result = Convert.ToInt32(command.ExecuteScalar());
+
+                return result;
+            }
         }
     }
 }
