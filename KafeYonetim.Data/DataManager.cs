@@ -27,9 +27,7 @@ namespace KafeYonetim.Data
                 {
                     result.Read();
                     var kafe = new Kafe((int)result["id"], result["Ad"].ToString(), result["AcilisSaati"].ToString(), result["KapanisSaati"].ToString());
-                    kafe.Durumm = result["Durum"].ToString();
-
-                    
+                    kafe.Durum = (KafeDurum)result["Durum"];
 
                     return kafe;
                 }
@@ -97,15 +95,18 @@ namespace KafeYonetim.Data
 
         public static List<Calisan> CalisanlariListele()
         {
-            using (SqlConnection connection=CreateConnection())
+            using (SqlConnection connection = CreateConnection())
             {
                 List<Calisan> Calisanlar = new List<Calisan>();
                 SqlCommand command = new SqlCommand("select Calisan.Isim,Calisan.IseGirisTarihi,Gorev.GorevAdi from Calisan inner join Gorev on Calisan.GorevId=Gorev.id", connection);
-                using (SqlDataReader result=command.ExecuteReader())
+                using (SqlDataReader result = command.ExecuteReader())
                 {
                     while (result.Read())
                     {
-                        Calisan calisan = new Calisan(result["Isim"].ToString(),(DateTime)result["IseGirisTarihi"],DataManager.AktifKafeyiGetir(),result["GorevAdi"].ToString());
+                        //Gorev gorev = new Gorev(result["GorevAdi"].ToString());
+                        Calisan calisan = new Calisan(result["Isim"].ToString(), (DateTime)result["IseGirisTarihi"], DataManager.AktifKafeyiGetir() );
+                        calisan.Gorev.GorevAdi = result["GorevAdi"].ToString();
+                        
                         Calisanlar.Add(calisan);
                     }
                 }
@@ -117,46 +118,20 @@ namespace KafeYonetim.Data
         {
             using (var connection = CreateConnection())
             {
-                var commandGarson = new SqlCommand("INSERT INTO Asci (Puan) VALUES(@Puan); SELECT scope_identity()", connection);
+                var commandGarson = new SqlCommand(@"
+                            INSERT INTO Asci (Puan) VALUES (@Puan); 
+                            DECLARE @id int;
+                            SET @id= scope_identity();
+                            INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES (@Isim, @IseGirisTarihi, @MesaideMi, @KafeId, @Durum, @GorevId, @id); SELECT scope_identity()", connection);
                 commandGarson.Parameters.AddWithValue("@Puan", asci.Puan);
+                commandGarson.Parameters.AddWithValue("@Isim", asci.Isim);
+                commandGarson.Parameters.AddWithValue("@IseGirisTarihi",asci.IseGirisTarihi);
+                commandGarson.Parameters.AddWithValue("@MesaideMi", asci.MesaideMi);
+                commandGarson.Parameters.AddWithValue("@KafeId", asci.Kafe.Id);
+                commandGarson.Parameters.AddWithValue("@Durum", asci.Durum);
+                commandGarson.Parameters.AddWithValue("@GorevId", 1);
 
-                var id = Convert.ToInt32(commandGarson.ExecuteScalar());
-
-                var commandCalisan = new SqlCommand("INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES (@Isim, @IseGirisTarihi, @MesaideMi, @KafeId, @Durum, @GorevId, @GorevTabloId); SELECT scope_identity()", connection);
-
-                commandCalisan.Parameters.AddWithValue("@Isim", asci.Isim);
-                commandCalisan.Parameters.AddWithValue("@IseGirisTarihi", asci.IseGirisTarihi);
-                commandCalisan.Parameters.AddWithValue("@MesaideMi", asci.MesaideMi);
-                commandCalisan.Parameters.AddWithValue("@KafeId", asci.Kafe.Id);
-                commandCalisan.Parameters.AddWithValue("@Durum", asci.Durum);
-                commandCalisan.Parameters.AddWithValue("@GorevId", 1);
-                commandCalisan.Parameters.AddWithValue("@GorevTabloId", id);
-
-                var result = Convert.ToInt32(commandCalisan.ExecuteScalar());
-
-                return result;
-            }
-        }
-        public static int GarsonEkle(Garson garson)
-        {
-            using (var connection = CreateConnection())
-            {
-                var commandGarson = new SqlCommand("INSERT INTO Garson (Bahsis) VALUES(@bahsis); SELECT scope_identity()", connection);
-                commandGarson.Parameters.AddWithValue("@bahsis", garson.Bahsis);
-
-                var id = Convert.ToInt32(commandGarson.ExecuteScalar());
-
-                var commandCalisan = new SqlCommand("INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES (@Isim, @IseGirisTarihi, @MesaideMi, @KafeId, @Durum, @GorevId, @GorevTabloId); SELECT scope_identity()", connection);
-
-                commandCalisan.Parameters.AddWithValue("@Isim", garson.Isim);
-                commandCalisan.Parameters.AddWithValue("@IseGirisTarihi", garson.IseGirisTarihi);
-                commandCalisan.Parameters.AddWithValue("@MesaideMi", garson.MesaideMi);
-                commandCalisan.Parameters.AddWithValue("@KafeId", garson.Kafe.Id);
-                commandCalisan.Parameters.AddWithValue("@Durum", garson.Durum);
-                commandCalisan.Parameters.AddWithValue("@GorevId", 2);
-                commandCalisan.Parameters.AddWithValue("@GorevTabloId", id);
-
-                var result = Convert.ToInt32(commandCalisan.ExecuteScalar());
+                var result = Convert.ToInt32(commandGarson.ExecuteScalar());
 
                 return result;
             }
@@ -368,6 +343,27 @@ namespace KafeYonetim.Data
             }
         }
 
-        
+        public static int GarsonEkle(Garson garson)
+        {
+            using (var connection = CreateConnection())
+            {
+                var commandGarson = new SqlCommand(@"
+                            INSERT INTO Garson (Bahsis) VALUES (@bahsis); 
+                            DECLARE @id int;
+                            SET @id= scope_identity();
+                            INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES (@Isim, @IseGirisTarihi, @MesaideMi, @KafeId, @Durum, @GorevId, @id); SELECT scope_identity()", connection);
+                commandGarson.Parameters.AddWithValue("@bahsis", garson.Bahsis);
+                commandGarson.Parameters.AddWithValue("@Isim", garson.Isim);
+                commandGarson.Parameters.AddWithValue("@IseGirisTarihi", garson.IseGirisTarihi);
+                commandGarson.Parameters.AddWithValue("@MesaideMi", garson.MesaideMi);
+                commandGarson.Parameters.AddWithValue("@KafeId", garson.Kafe.Id);
+                commandGarson.Parameters.AddWithValue("@Durum", garson.Durum);
+                commandGarson.Parameters.AddWithValue("@GorevId", 2);
+
+                var result = Convert.ToInt32(commandGarson.ExecuteScalar());
+
+                return result;
+            }
+        }
     }
 }

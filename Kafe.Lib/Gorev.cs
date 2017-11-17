@@ -8,10 +8,7 @@ namespace KafeYonetim.Lib
 {
     public class Gorev
     {
-        public Gorev(string ga)
-        {
-            gorevAdi = ga;
-        }
-        public string gorevAdi { get; set; }
+        public int Id { get; set; }
+        public string GorevAdi { get; set; }
     }
 }
