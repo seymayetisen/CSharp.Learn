@@ -7,7 +7,7 @@ namespace KafeYonetim.Data
 {
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=kafeYönetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -26,7 +26,7 @@ namespace KafeYonetim.Data
                 using (var result = command.ExecuteReader())
                 {
                     result.Read();
-                    var kafe = new Kafe((int)result["Id"], result["Ad"].ToString(), result["AcilisSaati"].ToString(), result["KapanisSaati"].ToString());
+                    var kafe = new Kafe((int)result["id"], result["Ad"].ToString(), result["AcilisSaati"].ToString(), result["KapanisSaati"].ToString());
                     kafe.Durum = (KafeDurum)result["Durum"];
 
                     return kafe;
@@ -90,6 +90,29 @@ namespace KafeYonetim.Data
 
                 //return new Tuple<int, int>((int)reader["MasaSayisi"], (int)reader["KisiSayisi"]);               
                 //return new MasaKisiSayisi { MasaSayisi = (int)reader["MasaSayisi"], KisiSayisi=(int)reader["KisiSayisi"]};
+            }
+        }
+
+        public static int AsciEkle(Asci asci)
+        {
+            using (var connection = CreateConnection())
+            {
+                var commandGarson = new SqlCommand(@"
+                            INSERT INTO Asci (Puan) VALUES (@Puan); 
+                            DECLARE @id int;
+                            SET @id= scope_identity();
+                            INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES (@Isim, @IseGirisTarihi, @MesaideMi, @KafeId, @Durum, @GorevId, @id); SELECT scope_identity()", connection);
+                commandGarson.Parameters.AddWithValue("@Puan", asci.Puan);
+                commandGarson.Parameters.AddWithValue("@Isim", asci.Isim);
+                commandGarson.Parameters.AddWithValue("@IseGirisTarihi",asci.IseGirisTarihi);
+                commandGarson.Parameters.AddWithValue("@MesaideMi", asci.MesaideMi);
+                commandGarson.Parameters.AddWithValue("@KafeId", asci.Kafe.Id);
+                commandGarson.Parameters.AddWithValue("@Durum", asci.Durum);
+                commandGarson.Parameters.AddWithValue("@GorevId", 1);
+
+                var result = Convert.ToInt32(commandGarson.ExecuteScalar());
+
+                return result;
             }
         }
 
