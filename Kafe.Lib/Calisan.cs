@@ -15,6 +15,7 @@ namespace KafeYonetim.Lib
             MesaideMi = false;
             Kafe = kafe;
             Siparisler = new List<Siparis>();
+            Gorev = new Gorev();
         }
 
         public int Id { get; set; }

@@ -93,6 +93,27 @@ namespace KafeYonetim.Data
             }
         }
 
+        public static List<Calisan> CalisanlariListele()
+        {
+            using (SqlConnection connection = CreateConnection())
+            {
+                List<Calisan> Calisanlar = new List<Calisan>();
+                SqlCommand command = new SqlCommand("select Calisan.Isim,Calisan.IseGirisTarihi,Gorev.GorevAdi from Calisan inner join Gorev on Calisan.GorevId=Gorev.id", connection);
+                using (SqlDataReader result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        //Gorev gorev = new Gorev(result["GorevAdi"].ToString());
+                        Calisan calisan = new Calisan(result["Isim"].ToString(), (DateTime)result["IseGirisTarihi"], DataManager.AktifKafeyiGetir() );
+                        calisan.Gorev.GorevAdi = result["GorevAdi"].ToString();
+                        
+                        Calisanlar.Add(calisan);
+                    }
+                }
+                return Calisanlar;
+            }
+        }
+
         public static int AsciEkle(Asci asci)
         {
             using (var connection = CreateConnection())
