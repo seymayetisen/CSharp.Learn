@@ -7,7 +7,7 @@ namespace KafeYonetim.Data
 {
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=kafeYönetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=KafeYonetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -26,13 +26,12 @@ namespace KafeYonetim.Data
                 using (var result = command.ExecuteReader())
                 {
                     result.Read();
-                    Kafe kafe = new Kafe((int)result["id"],result["Ad"].ToString(),result["AcilisSaati"].ToString(),result["KapanisSaati"].ToString());
+                    var kafe = new Kafe((int)result["Id"], result["Ad"].ToString(), result["AcilisSaati"].ToString(), result["KapanisSaati"].ToString());
                     kafe.Durum = (KafeDurum)result["Durum"];
+
                     return kafe;
                 }
             }
-
-            Console.ReadLine();
         }
 
         public static void KafeAdiniGetir()
@@ -75,20 +74,24 @@ namespace KafeYonetim.Data
 
         }
 
-        public static Tuple<int,int> MasaSayisi()
+        public static Tuple<int, int> MasaSayisi()
         {
             using (var connection = CreateConnection())
             {
-                var command = new SqlCommand("SELECT COUNT(*) as sayi,sum(kisisayisi) as kisi FROM Masa", connection);
+                var command = new SqlCommand("SELECT COUNT(*) AS MasaSayisi, SUM(KisiSayisi) AS KisiSayisi FROM Masa", connection);
 
-                SqlDataReader reader = command.ExecuteReader();
+                var reader =  command.ExecuteReader();
+
                 reader.Read();
 
-                return new Tuple<int,int>((int)reader["sayi"],(int)reader["kisi"]);
+                var tuple = new Tuple<int, int>((int)reader["MasaSayisi"], (int)reader["KisiSayisi"]);
+
+                return tuple; 
+
+                //return new Tuple<int, int>((int)reader["MasaSayisi"], (int)reader["KisiSayisi"]);               
+                //return new MasaKisiSayisi { MasaSayisi = (int)reader["MasaSayisi"], KisiSayisi=(int)reader["KisiSayisi"]};
             }
         }
-
-       
 
         public static List<Urun> UrunListesiniGetir()
         {
@@ -291,6 +294,29 @@ namespace KafeYonetim.Data
                 command.Parameters.AddWithValue("@kisiSayisi", masa.KisiSayisi);
 
                 int result = Convert.ToInt32(command.ExecuteScalar());
+
+                return result;
+            }
+        }
+
+        public static int GarsonEkle(Garson garson)
+        {
+            using (var connection = CreateConnection())
+            {
+                var commandGarson = new SqlCommand(@"
+                            INSERT INTO Garson (Bahsis) VALUES (@bahsis); 
+                            DECLARE @id int;
+                            SET @id= scope_identity();
+                            INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES (@Isim, @IseGirisTarihi, @MesaideMi, @KafeId, @Durum, @GorevId, @id); SELECT scope_identity()", connection);
+                commandGarson.Parameters.AddWithValue("@bahsis", garson.Bahsis);
+                commandGarson.Parameters.AddWithValue("@Isim", garson.Isim);
+                commandGarson.Parameters.AddWithValue("@IseGirisTarihi", garson.IseGirisTarihi);
+                commandGarson.Parameters.AddWithValue("@MesaideMi", garson.MesaideMi);
+                commandGarson.Parameters.AddWithValue("@KafeId", garson.Kafe.Id);
+                commandGarson.Parameters.AddWithValue("@Durum", garson.Durum);
+                commandGarson.Parameters.AddWithValue("@GorevId", 2);
+
+                var result = Convert.ToInt32(commandGarson.ExecuteScalar());
 
                 return result;
             }

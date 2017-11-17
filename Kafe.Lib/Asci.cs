@@ -35,5 +35,7 @@ namespace KafeYonetim.Lib
             siparis.SiparisiAlanGarson.SiparisiServisEt(siparis);
             siparis.SiparisiHazirlayanAsci = null;
         }
+
+        public int Puan { get; set; }
     }
 }
