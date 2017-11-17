@@ -82,7 +82,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
         }
 
-            private static void MasaSayisi()
+        private static void MasaSayisi()
         {
             Console.Clear();
 
@@ -197,10 +197,10 @@ namespace KafeYonetim.Sunum.AnaUygulama
             var yeniMasa = new Masa(masaNo, DataManager.AktifKafeyiGetir());
             yeniMasa.Durum = MasaDurum.Bos;
             Console.Write("Kişi Sayısı: ");
-            yeniMasa.KisiSayisi = byte.Parse( Console.ReadLine());
+            yeniMasa.KisiSayisi = byte.Parse(Console.ReadLine());
 
-            int id =DataManager.MasaEkle(yeniMasa);
-            
+            int id = DataManager.MasaEkle(yeniMasa);
+
             Console.WriteLine($"{id} ID'li masa eklendi");
 
             Console.ReadLine();

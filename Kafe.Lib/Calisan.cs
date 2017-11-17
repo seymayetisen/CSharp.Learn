@@ -24,7 +24,6 @@ namespace KafeYonetim.Lib
         public CalisanDurum Durum { get; set; }
         public List<Siparis> Siparisler { get; set; }
         public Kafe Kafe { get; set; }
-        public double Bahsis { get; set; }
 
         public void MesaiyeBasladi()
         {
