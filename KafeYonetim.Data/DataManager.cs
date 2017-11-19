@@ -7,7 +7,7 @@ namespace KafeYonetim.Data
 {
     public class DataManager
     {
-        private static string connStr = "Data Source=DESKTOP-S3O5AOR;Initial Catalog=kafeYönetim;Integrated Security=True";
+        private static string connStr = "Data Source=DESKTOP-SON6OA8;Initial Catalog=kafeYönetim;Integrated Security=True";
 
         private static SqlConnection CreateConnection()
         {
@@ -90,6 +90,29 @@ namespace KafeYonetim.Data
 
                 //return new Tuple<int, int>((int)reader["MasaSayisi"], (int)reader["KisiSayisi"]);               
                 //return new MasaKisiSayisi { MasaSayisi = (int)reader["MasaSayisi"], KisiSayisi=(int)reader["KisiSayisi"]};
+            }
+        }
+
+        public static int BulasikciEkle(Bulasikci bulasikci)
+        {
+            using (SqlConnection connection=CreateConnection())
+            {
+                SqlCommand commandGarson = new SqlCommand(@"
+                            INSERT INTO Bulasikci (hizi) VALUES (@hizi); 
+                            DECLARE @id int;
+                            SET @id= scope_identity();
+                            INSERT INTO Calisan (Isim, IseGirisTarihi, MesaideMi, KafeId, Durum, GorevId, GorevTabloId) VALUES (@Isim, @IseGirisTarihi, @MesaideMi, @KafeId, @Durum, @GorevId, @id); SELECT scope_identity()", connection);
+                commandGarson.Parameters.AddWithValue("@hizi", bulasikci.hizi);
+                commandGarson.Parameters.AddWithValue("@Isim", bulasikci.Isim);
+                commandGarson.Parameters.AddWithValue("@IseGirisTarihi", bulasikci.IseGirisTarihi);
+                commandGarson.Parameters.AddWithValue("@MesaideMi", bulasikci.MesaideMi);
+                commandGarson.Parameters.AddWithValue("@KafeId", bulasikci.Kafe.Id);
+                commandGarson.Parameters.AddWithValue("@Durum", bulasikci.Durum);
+                commandGarson.Parameters.AddWithValue("@GorevId", 3);
+
+                var result = Convert.ToInt32(commandGarson.ExecuteScalar());
+
+                return result;
             }
         }
 

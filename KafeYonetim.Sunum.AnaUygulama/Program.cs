@@ -45,7 +45,8 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("7.  Masa Sayısı");
                 Console.WriteLine("8.  Garson Ekle");
                 Console.WriteLine("9.  asci Ekle");
-                Console.WriteLine("10. calisanlari listele");
+                Console.WriteLine("10. Bulaşikçi Ekle");
+                Console.WriteLine("11. calisanlari listele");
 
 
                 Console.WriteLine();
@@ -63,7 +64,8 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "7":  MasaSayisi(); break;
                     case "8":  GarsonEkle(); break;
                     case "9":  AsciEkle(); break;
-                    case "10": CalisanlariListele(); break;
+                    case "10": BulasikciEkle(); break;
+                    case "11": CalisanlariListele(); break;
 
 
                     case "h": return;
@@ -73,6 +75,17 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
             } while (true);
 
+        }
+
+        private static void BulasikciEkle()
+        {
+            Console.Clear();      
+            Console.WriteLine("İsim : ");
+            string isim = Console.ReadLine();
+            Bulasikci bulasikci = new Bulasikci(isim,DateTime.Now,DataManager.AktifKafeyiGetir());
+            DataManager.BulasikciEkle(bulasikci);
+            Console.ReadLine();
+             
         }
 
         private static void CalisanlariListele()
